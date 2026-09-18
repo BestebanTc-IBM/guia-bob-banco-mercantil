@@ -100,6 +100,27 @@ El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de 
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+### El contexto más importante: tu carpeta de trabajo
+
+Antes de hablar de botones, hay algo que la mayoría no nota al empezar y que cambia todo:
+
+**Bob no solo "ve" los archivos que le adjuntas manualmente — su fuente de contexto principal es la carpeta del proyecto que tienes abierta en el IDE.**
+
+Cuando abres un proyecto en VS Code o IntelliJ con Bob activo, él tiene acceso a toda la estructura de archivos de esa carpeta: clases Java, configuraciones, `pom.xml`, archivos de propiedades, etc. Puedes preguntarle sobre cualquier archivo del proyecto sin necesidad de arrastrarlo al chat.
+
+**Implicaciones prácticas para el banco:**
+
+| Situación | Lo que Bob puede ver |
+|---|---|
+| Tienes abierto el proyecto `core-bancario/` | Todas las clases Java, configs y recursos dentro de esa carpeta |
+| Abres solo `TransferenciaService.java` en el editor | Bob prioriza ese archivo como contexto activo |
+| Adjuntas un archivo al chat manualmente | Ese archivo queda anclado al contexto de toda la sesión |
+| No tienes ninguna carpeta abierta | Bob solo ve lo que le pegues o adjuntes directamente en el chat |
+
+> 💡 **Consejo práctico:** Antes de pedirle a Bob que analice o modifique código, abre en el IDE la carpeta raíz del proyecto correspondiente. Así Bob tiene el mapa completo del código y sus dependencias, no solo el archivo aislado.
+
+---
+
 ### Los 5 controles que usarás siempre
 
 | Control | Ubicación | Para qué sirve |
@@ -301,11 +322,11 @@ Para tareas en código crítico bancario, este flujo reduce el riesgo:
 
 ## Conceptos que confunden al principio
 
-**"¿Bob tiene acceso a producción?"**
-No. Bob trabaja exclusivamente con los archivos que tú le compartes en la sesión. Nunca accede a bases de datos, servidores ni sistemas externos.
-
 **"¿Guarda mi código en la nube?"**
-Depende de la configuración del tenant de tu organización. En entornos empresariales IBM, el código se procesa con las mismas políticas de datos que cualquier otro servicio IBM en tu contrato.
+El código que compartes con Bob se procesa bajo las mismas políticas de datos que cualquier otro servicio IBM de tu contrato empresarial. Dos puntos clave para el banco:
+
+- **Nada de lo que escribes o compartes se usa para entrenar modelos de IA.** Los prompts, el código y las respuestas de la sesión no alimentan ningún proceso de entrenamiento.
+- **El procesamiento ocurre dentro del perímetro de seguridad de IBM**, sujeto a los acuerdos de confidencialidad y cumplimiento de tu organización.
 
 **"Si Bob modifica un archivo, ¿puedo deshacer?"**
 Sí. Los cambios de Bob en Modo Agent se muestran como diferencias (diff) antes de aplicarse, y VS Code / IntelliJ mantienen el historial de deshacer normal.
