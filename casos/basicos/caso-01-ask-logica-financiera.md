@@ -11,6 +11,22 @@ layout: default
 
 ---
 
+## 📥 ¿Tienes el repositorio abierto en IBM Bob?
+
+Para este caso necesitas el archivo `codigo/caso-01/ComisionService.java`. Si aún no tienes el repositorio, descárgalo ahora:
+
+**Opción A — Con Git:**
+```bash
+git clone https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil.git
+```
+
+**Opción B — Sin Git:**
+Ve a [github.com/BestebanTc-IBM/guia-bob-banco-mercantil](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil) → botón verde **`< > Code`** → **`Download ZIP`** → extrae y abre la carpeta en IBM Bob.
+
+Una vez abierta la carpeta en IBM Bob, Bob tendrá acceso automático a todos los archivos. No necesitas adjuntar nada manualmente.
+
+---
+
 ## Contexto del Caso
 
 Eres nuevo en el equipo de **Core Bancario**. Te asignan revisar el módulo de cálculo de comisiones interbancarias, que nadie en el equipo ha tocado en 3 años. El archivo tiene 200 líneas, está sin comentarios y tiene varios métodos encadenados.
