@@ -11,6 +11,22 @@ layout: default
 
 ---
 
+## 📥 ¿Tienes el repositorio abierto en IBM Bob?
+
+Para este caso necesitas el archivo `codigo/caso-07/MetricasDashboardController.java`. Si aún no tienes el repositorio, descárgalo ahora:
+
+**Opción A — Con Git:**
+```bash
+git clone https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil.git
+```
+
+**Opción B — Sin Git:**
+Ve a [github.com/BestebanTc-IBM/guia-bob-banco-mercantil](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil) → botón verde **`< > Code`** → **`Download ZIP`** → extrae y abre la carpeta en IBM Bob.
+
+Una vez abierta la carpeta en IBM Bob, Bob tendrá acceso automático a todos los archivos. No necesitas adjuntar nada manualmente.
+
+---
+
 ## ¿Por Qué Este Caso?
 
 Los desarrolladores bancarios pasan el día mirando logs y tablas de base de datos. Este caso demuestra que Bob puede generar **interfaces visuales completas** — no solo código de backend — a partir de endpoints que ya existen en el sistema.
@@ -41,7 +57,7 @@ El dashboard debe mostrar:
 
 ## Archivos de Partida
 
-Descarga del repositorio y ábrelos en el IDE:
+Descarga del repositorio y ábrelos en IBM Bob:
 
 1. **[`MetricasDashboardController.java`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-07/MetricasDashboardController.java)** — los 4 endpoints REST con las métricas
 2. **[`dashboard-resultado-esperado.html`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-07/dashboard-resultado-esperado.html)** — ábrelo en Chrome para ver el objetivo
