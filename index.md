@@ -34,8 +34,7 @@ PASOS QUE DEBES EJECUTAR:
      Si la carpeta no existe, créala con mkdir -p.
 
 3. Verifica si Git está instalado ejecutando: git --version
-   - Si Git NO está instalado, detente y dime exactamente cómo instalarlo
-     para mi sistema operativo antes de continuar.
+   - Si Git NO está instalado, detente y dime solamente: "No tienes Git instalado."
    - Si Git SÍ está instalado, continúa al paso 4.
 
 4. Verifica si la carpeta guia-bob-banco-mercantil/ ya existe dentro
