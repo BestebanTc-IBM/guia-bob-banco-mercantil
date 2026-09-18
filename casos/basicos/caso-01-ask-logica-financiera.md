@@ -37,11 +37,21 @@ Eres nuevo en el equipo de **Core Bancario**. Te asignan revisar el módulo de c
 
 ## Código de Partida
 
-Descarga [`ComisionService.java`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-01/ComisionService.java) del repositorio y ábrelo en tu IDE.
+**Si ya tienes el repositorio abierto en IBM Bob:** el archivo está en `codigo/caso-01/ComisionService.java` — ábrelo directamente desde el explorador de archivos de IBM Bob.
+
+**Si aún no tienes el repositorio:** descarga [`ComisionService.java`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-01/ComisionService.java) individualmente desde GitHub, o vuelve al [inicio](../../index.md) para clonar el repositorio completo antes de continuar.
+
+Este es el código con el que trabajarás:
 
 ```java
 // ComisionService.java
+package com.bancomercantil.core.comisiones;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class ComisionService {
+
     private static final BigDecimal TASA_INTERBANCARIA_BASE = new BigDecimal("0.0035");
     private static final BigDecimal TASA_PREMIUM            = new BigDecimal("0.0020");
     private static final BigDecimal UMBRAL_MONTO_ALTO       = new BigDecimal("50000.00");
@@ -49,9 +59,42 @@ public class ComisionService {
     private static final BigDecimal COMISION_MAXIMA         = new BigDecimal("500.00");
 
     public BigDecimal calcularComision(BigDecimal monto, String tipoCuenta, boolean esClientePremium) {
-        // ...
+        if (monto == null || monto.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El monto debe ser mayor que cero");
+        }
+
+        BigDecimal tasa = resolverTasa(monto, tipoCuenta, esClientePremium);
+        BigDecimal comision = monto.multiply(tasa).setScale(2, RoundingMode.HALF_UP);
+
+        return aplicarLimites(comision);
     }
-    // ver archivo completo en el repositorio
+
+    private BigDecimal resolverTasa(BigDecimal monto, String tipoCuenta, boolean esClientePremium) {
+        if (esClientePremium) {
+            return TASA_PREMIUM;
+        }
+        if ("CORRIENTE".equals(tipoCuenta) && monto.compareTo(UMBRAL_MONTO_ALTO) > 0) {
+            return TASA_INTERBANCARIA_BASE.multiply(new BigDecimal("0.80"))
+                                         .setScale(4, RoundingMode.HALF_UP);
+        }
+        return TASA_INTERBANCARIA_BASE;
+    }
+
+    private BigDecimal aplicarLimites(BigDecimal comision) {
+        if (comision.compareTo(COMISION_MINIMA) < 0) return COMISION_MINIMA;
+        if (comision.compareTo(COMISION_MAXIMA) > 0) return COMISION_MAXIMA;
+        return comision;
+    }
+
+    public boolean validarCuenta(String numeroCuenta, String tipoCuenta) {
+        if (numeroCuenta == null || numeroCuenta.isBlank()) return false;
+        if (!numeroCuenta.matches("\\d{10,20}")) return false;
+
+        return switch (tipoCuenta) {
+            case "CORRIENTE", "AHORRO", "PLAZO_FIJO" -> true;
+            default -> false;
+        };
+    }
 }
 ```
 
@@ -59,13 +102,23 @@ public class ComisionService {
 
 ## Paso a Paso con Bob
 
-### Paso 1 — Selecciona 🔵 Ask
-> Solo queremos entender, no modificar. Ask es completamente seguro.
+### Paso 1 — Selecciona el modo correcto
+
+En el panel de Bob, selecciona el modo **🔵 Ask**.
+
+> Por qué Ask y no Agent: Solo queremos entender, no modificar. Ask es más seguro y suficiente para esta tarea.
+
+---
 
 ### Paso 2 — Adjunta el archivo
-Arrastra `ComisionService.java` al chat de Bob, o escribe `@ComisionService.java`.
+
+Arrastra `ComisionService.java` al chat de Bob, o escribe `@ComisionService.java` en el prompt.
+
+---
 
 ### Paso 3 — Primer prompt: Visión general
+
+Copia y pega este prompt tal cual:
 
 ```
 Tengo adjunto el archivo ComisionService.java.
@@ -77,7 +130,14 @@ Explícame de forma clara y estructurada:
 No modifiques ningún archivo.
 ```
 
-### Paso 4 — Ejemplos numéricos
+**¿Qué esperar?**
+Bob debería responder con algo similar a:
+
+> *"Este servicio calcula la comisión interbancaria para una transacción. Aplica tres reglas: (1) clientes premium pagan tasa reducida (0.20%), (2) cuentas corrientes con montos superiores a $50,000 reciben descuento del 20% sobre la tasa base, (3) la comisión siempre queda entre $2.50 y $500.00 independientemente del cálculo..."*
+
+---
+
+### Paso 4 — Segundo prompt: Profundidad en la lógica
 
 ```
 Ahora explícame con un ejemplo numérico concreto:
@@ -87,7 +147,9 @@ Ahora explícame con un ejemplo numérico concreto:
 Muestra el cálculo paso a paso para cada caso.
 ```
 
-### Paso 5 — Auditoría de casos borde
+---
+
+### Paso 5 — Tercer prompt: Auditoría de casos borde
 
 ```
 Actuando como un auditor de software bancario:
@@ -111,14 +173,13 @@ Al terminar los tres prompts deberás poder responder sin mirar el código:
 
 ## 💡 Lo Que Aprendiste
 
-1. **Ask Mode no modifica archivos**: Seguro para exploración en código de producción.
+1. **Ask Mode no modifica archivos**: Es completamente seguro para exploración.
 2. **Bob entiende dominio bancario**: No necesitas explicarle qué es una tasa interbancaria.
-3. **Los prompts en cadena son más poderosos**: Cada respuesta enriquece el siguiente prompt.
+3. **Los prompts en cadena son más poderosos**: Cada respuesta enriquece el contexto del siguiente prompt.
+4. **Bob como colega de revisión**: Puedes usarlo para auditar código antes de tocarlo.
 
 ---
 
-## Navegación
+## ▶️ Siguiente Caso
 
-| ← Anterior | Siguiente → |
-|---|---|
-| [Fundamentos](../../FUNDAMENTOS.md) | [Caso 2 — Bug BigDecimal](./caso-02-agent-bug-bigdecimal.md) |
+👉 **[Caso 2 — Agent Mode: Corrección de Bug de Precisión](./caso-02-agent-bug-bigdecimal.md)**
