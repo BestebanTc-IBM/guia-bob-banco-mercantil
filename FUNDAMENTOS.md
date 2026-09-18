@@ -104,9 +104,9 @@ El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de 
 
 Antes de hablar de botones, hay algo que la mayoría no nota al empezar y que cambia todo:
 
-**Bob no solo "ve" los archivos que le adjuntas manualmente — su fuente de contexto principal es la carpeta del proyecto que tienes abierta en el IDE.**
+**Bob no solo "ve" los archivos que le adjuntas manualmente — su fuente de contexto principal es la carpeta del proyecto que tienes abierta en IBM Bob.**
 
-Cuando abres un proyecto en VS Code o IntelliJ con Bob activo, él tiene acceso a toda la estructura de archivos de esa carpeta: clases Java, configuraciones, `pom.xml`, archivos de propiedades, etc. Puedes preguntarle sobre cualquier archivo del proyecto sin necesidad de arrastrarlo al chat.
+Cuando abres un proyecto en IBM Bob, él tiene acceso a toda la estructura de archivos de esa carpeta: clases Java, configuraciones, `pom.xml`, archivos de propiedades, etc. Puedes preguntarle sobre cualquier archivo del proyecto sin necesidad de arrastrarlo al chat.
 
 **Implicaciones prácticas para el banco:**
 
@@ -117,7 +117,7 @@ Cuando abres un proyecto en VS Code o IntelliJ con Bob activo, él tiene acceso 
 | Adjuntas un archivo al chat manualmente | Ese archivo queda anclado al contexto de toda la sesión |
 | No tienes ninguna carpeta abierta | Bob solo ve lo que le pegues o adjuntes directamente en el chat |
 
-> 💡 **Consejo práctico:** Antes de pedirle a Bob que analice o modifique código, abre en el IDE la carpeta raíz del proyecto correspondiente. Así Bob tiene el mapa completo del código y sus dependencias, no solo el archivo aislado.
+> 💡 **Consejo práctico:** Antes de pedirle a Bob que analice o modifique código, abre en IBM Bob la carpeta raíz del proyecto correspondiente. Así Bob tiene el mapa completo del código y sus dependencias, no solo el archivo aislado.
 
 ---
 
@@ -329,7 +329,7 @@ El código que compartes con Bob se procesa bajo las mismas políticas de datos 
 - **El procesamiento ocurre dentro del perímetro de seguridad de IBM**, sujeto a los acuerdos de confidencialidad y cumplimiento de tu organización.
 
 **"Si Bob modifica un archivo, ¿puedo deshacer?"**
-Sí. Los cambios de Bob en Modo Agent se muestran como diferencias (diff) antes de aplicarse, y VS Code / IntelliJ mantienen el historial de deshacer normal.
+Sí. Los cambios de Bob en Modo Agent se muestran como diferencias (diff) antes de aplicarse. IBM Bob mantiene el historial de deshacer, y puedes revisar cada cambio antes de aceptarlo.
 
 **"¿Funciona con COBOL?"**
 Sí. Bob tiene capacidades para COBOL, JCL y otros lenguajes de mainframe. Los casos de uso de esta guía usan Java por ser el más común en el equipo, pero los principios aplican igual.
