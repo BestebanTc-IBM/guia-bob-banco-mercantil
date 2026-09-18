@@ -57,7 +57,7 @@ PASOS QUE DEBES EJECUTAR:
      (Archivo → Abrir carpeta → [ruta completa]).
 ```
 
-> ⚠️ **Importante:** El prompt está en **Agent Mode** porque necesita ejecutar comandos en tu sistema. Si Bob te pide confirmación antes de ejecutar algún paso, acepta.
+> ⚠️ **Importante:** El prompt está en **Agent Mode** porque necesita ejecutar comandos en tu sistema. Cuando Bob te muestre un comando antes de ejecutarlo, **léelo, verifica que se ve razonable y luego acepta.** Nunca aceptes sin revisar.
 
 ---
 
