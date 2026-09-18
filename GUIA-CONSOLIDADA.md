@@ -1,6 +1,9 @@
 ---
 title: "Guía Consolidada — IBM Bob para Banco Mercantil"
+layout: default
 ---
+
+<div class="breadcrumb">📍 <a href="/guia-bob-banco-mercantil/">Inicio</a> › Guía Consolidada (versión PDF)</div>
 
 # Guía Práctica de IBM Bob — Banco Mercantil
 ## Documento Consolidado · Versión para PDF
@@ -38,65 +41,27 @@ title: "Guía Consolidada — IBM Bob para Banco Mercantil"
 ## Caso 1 · Ask Mode: Comprensión de Lógica Financiera
 **Modo:** 🔵 Ask | **Tiempo:** 10 min
 
-**Prompt 1 — Visión general:**
-```
-Tengo adjunto ComisionService.java. Explícame:
-1. Qué hace este servicio en términos bancarios.
-2. Cuáles son los flujos principales de calcularComision().
-3. Qué reglas de negocio están implementadas.
-4. Qué casos borde podrían no estar cubiertos.
-No modifiques ningún archivo.
-```
+**Prompt 1:** `Tengo adjunto ComisionService.java. Explícame: qué hace este servicio en términos bancarios, cuáles son los flujos principales, qué reglas de negocio están implementadas y qué casos borde podrían no estar cubiertos.`
 
-**Prompt 2 — Ejemplos numéricos:**
-```
-Con ejemplos concretos, calcúlame la comisión para:
-- $75,000 cuenta CORRIENTE cliente estándar
-- $75,000 cliente PREMIUM
-- $100 cualquier cliente
-Muestra el cálculo paso a paso.
-```
+**Prompt 2:** `Con ejemplos concretos, calcúlame la comisión para: $75,000 cuenta CORRIENTE estándar, $75,000 cliente PREMIUM, $100 cualquier cliente. Muestra el cálculo paso a paso.`
 
-**Prompt 3 — Auditoría:**
-```
-Como auditor de software bancario, ¿qué entradas podrían causar
-comportamiento inesperado? Considera: nulos, tipos de cuenta no
-listados, umbral exacto de $50,000.
-```
+**Prompt 3:** `Como auditor de software bancario, ¿qué entradas podrían causar comportamiento inesperado? Considera: nulos, tipos de cuenta no listados, umbral exacto de $50,000.`
 
 ---
 
 ## Caso 2 · Agent Mode: Corrección de Bug BigDecimal
 **Modo:** 🔴 Agent | **Tiempo:** 10 min
 
-**Por qué double es un bug bancario:**
-```java
-double saldo = 100.10;
-System.out.println(saldo - 0.20);
-// → 99.89999999999999  ← ¡Error de centavos!
-
-// Correcto:
-BigDecimal saldo = new BigDecimal("100.10");
-System.out.println(saldo.subtract(new BigDecimal("0.20")));
-// → 99.90  ✓
+**Diagnóstico primero:**
+```
+Identifica todos los lugares donde se usa double para cálculos monetarios
+en TransferenciaService.java. No modifiques nada todavía.
 ```
 
-**Prompt de diagnóstico (primero):**
+**Corrección:**
 ```
-Identifica todos los lugares donde se usa double para cálculos
-monetarios en TransferenciaService.java. Explica brevemente por qué
-cada uno representa un riesgo bancario.
-No modifiques ningún archivo todavía.
-```
-
-**Prompt de corrección:**
-```
-Refactoriza TransferenciaService.java:
-1. Reemplaza todos los double por BigDecimal.
-2. Usa constructores de String: new BigDecimal("valor").
-3. Usa RoundingMode.HALF_UP con escala de 2.
-4. En tieneFondosSuficientes(), usa compareTo() en lugar de >=.
-5. Mantén los mismos nombres de métodos.
+Refactoriza: reemplaza double por BigDecimal, usa constructores de String,
+RoundingMode.HALF_UP escala 2, compareTo() en tieneFondosSuficientes().
 ```
 
 ---
@@ -104,22 +69,17 @@ Refactoriza TransferenciaService.java:
 ## Caso 3 · Agent Mode: Pruebas JUnit/Mockito
 **Modo:** 🔴 Agent | **Tiempo:** 10 min
 
-**Prompt de análisis (primero):**
+**Listar primero:**
 ```
-Antes de generar las pruebas, lista todos los casos de prueba para
-puedeDebitar() de CuentaValidatorService.java, incluyendo:
+Lista todos los casos de prueba para puedeDebitar() incluyendo:
 cuenta bloqueada, saldo insuficiente, límite diario exacto,
-monto nulo, sobregiro exactamente igual al límite.
-No escribas código todavía.
+sobregiro exactamente igual al límite. No escribas código todavía.
 ```
 
-**Prompt de generación:**
+**Generar:**
 ```
 Genera CuentaValidatorServiceTest.java con JUnit 5 y Mockito.
-Incluye todos los casos listados.
-Usa @DisplayName en español legible por negocio.
-Usa @ParameterizedTest donde aplique.
-Paquete: com.bancomercantil.core.cuentas
+Usa @DisplayName en español. Usa @ParameterizedTest donde aplique.
 ```
 
 ---
@@ -129,25 +89,21 @@ Paquete: com.bancomercantil.core.cuentas
 ## Caso 4 · Plan → Agent: Microservicio REST
 **Modos:** 🟡 Plan → 🔴 Agent | **Tiempo:** 15 min
 
-**Plan Mode — diseño arquitectónico:**
+**Plan Mode:**
 ```
 Actúa como arquitecto Java senior bancario.
-Diseña un microservicio REST:
-- GET /api/v1/cuentas/{id}/movimientos (filtros fecha, tipo, paginación max 50)
-- POST /api/v1/cuentas/{id}/bloqueo-preventivo (solo AUDITOR/SUPERVISOR)
-- DELETE /api/v1/cuentas/{id}/bloqueo-preventivo
+Diseña microservicio REST:
+- GET /api/v1/cuentas/{id}/movimientos (filtros, paginación max 50)
+- POST /bloqueo-preventivo (solo AUDITOR/SUPERVISOR)
+- DELETE /bloqueo-preventivo
 Stack: Java 11, Spring Boot 2.7, en memoria, header X-User-Role.
-Produce: lista de clases, paquetes, DTOs, riesgos. No escribas código.
+Produce lista de clases, paquetes, DTOs, riesgos. No escribas código.
 ```
 
-**Agent Mode — implementación (después de validar el plan):**
+**Agent Mode:**
 ```
-Basándote en el plan, genera los 5 archivos:
-1. MovimientoDTO.java
-2. BloqueoRequest.java — con Bean Validation
-3. MovimientoService.java — interfaz
-4. MovimientoServiceImpl.java — implementación en memoria con datos de ejemplo
-5. MovimientoController.java — con los 3 endpoints y validación de X-User-Role
+Genera los 5 archivos: MovimientoDTO, BloqueoRequest, MovimientoService,
+MovimientoServiceImpl (en memoria), MovimientoController.
 Paquete base: com.bancomercantil.movimientos
 ```
 
@@ -156,30 +112,23 @@ Paquete base: com.bancomercantil.movimientos
 ## Caso 5 · Ask → Agent: Optimización de Conciliación
 **Modos:** 🔵 Ask → 🔴 Agent | **Tiempo:** 15 min
 
-**Prompt de diagnóstico (Ask Mode):**
+**Diagnóstico:**
 ```
-Analiza ConciliacionBatchService.java con criterio de rendimiento Java.
-Para 500,000 registros: identifica problemas técnicamente, estima impacto
-de cada uno, indica cuál tiene mayor impacto. No modifiques nada.
-```
-
-**Prompt de refactorización (Agent Mode):**
-```
-Refactoriza ConciliacionBatchService.java:
-1. Convierte transaccionesExterno en HashMap indexado por referencia
-   antes del loop. Reduce búsqueda a O(1).
-2. Elimina la segunda pasada O(n²) usando un Set de referencias procesadas.
-3. Reemplaza concatenación de String por StringBuilder.
-Agrega comentario breve en cada cambio explicando el motivo.
+Analiza ConciliacionBatchService.java para 500,000 registros.
+Identifica problemas de rendimiento técnicamente.
+No modifiques nada.
 ```
 
-**Validación obligatoria antes de liberar:**
+**Refactorización:**
 ```
-Verifica que el algoritmo refactorizado produce los mismos resultados para:
-- Transacción en core y externo, mismo monto.
-- Transacción en core y externo, montos distintos.
-- Transacción en core sin par en externo.
-- Transacción en externo sin par en core.
+Refactoriza: HashMap para búsqueda O(1), Set para evitar segunda pasada,
+StringBuilder en generarReporteTexto(). Agrega comentarios.
+```
+
+**Validación obligatoria:**
+```
+Verifica resultados idénticos para los 4 escenarios:
+same monto, diferente monto, solo en core, solo en externo.
 ```
 
 ---
@@ -189,59 +138,20 @@ Verifica que el algoritmo refactorizado produce los mismos resultados para:
 ## Caso 6 · Modernización Java 11 → 21
 **Tiempo:** 20 min
 
-**Capacidades del Premium Java Package:**
-| Capacidad | Descripción |
-|---|---|
-| Análisis de migración | Identifica APIs deprecadas o removidas entre versiones |
-| Recetas de modernización | Aplica transformaciones (javax → jakarta) |
-| Análisis de dependencias | Detecta librerías incompatibles |
-| Explicación LTS | Explica Records, Sealed Classes, Virtual Threads |
-| Upgrade pom.xml | Actualiza versiones de Spring Boot y dependencias |
-
-**Prompt 1 — Reporte de migración:**
+**Reporte:**
 ```
-Actúa como experto en modernización Java con IBM Bob Premium Java Package.
-Tengo adjuntos PagoService.java y pom.xml.
-Objetivo: migrar Java 11/Spring Boot 2.7 → Java 21/Spring Boot 3.2.
+Analiza PagoService.java y pom.xml.
+Migrar Java 11/Spring Boot 2.7 → Java 21/Spring Boot 3.2.
 Produce tabla: Problema | Impacto | Solución.
-Incluye: javax.*, java.util.Date, candidatos a Java Records, pom.xml.
 ```
 
-**Prompt 2 — Migración automática:**
+**Migración:**
 ```
-Aplica la migración en PagoService.java:
-1. javax.* → jakarta.*
-2. java.util.Date → java.time.LocalDateTime
-3. Clase interna PagoResponse → Java Record:
-   public record PagoResponse(String referencia, String estado, LocalDateTime fecha) {}
+Aplica: javax.* → jakarta.*, java.util.Date → LocalDateTime,
+PagoResponse clase → Java Record.
 ```
 
-**Prompt 3 — Actualización pom.xml:**
-```
-Actualiza pom.xml:
-- spring-boot-starter-parent: 2.7.x → 3.2.x
-- Java: 11 → 21 en maven.compiler properties
-- javax.validation → jakarta.validation-api
-```
-
-**Antes / Después:**
-```java
-// ANTES — Java 11 / Spring Boot 2.7
-import javax.transaction.Transactional;
-import java.util.Date;
-
-public static class PagoResponse {
-    private final String referencia;
-    private final Date fecha;
-    // constructor + getters...
-}
-
-// DESPUÉS — Java 21 / Spring Boot 3.2
-import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
-
-public record PagoResponse(String referencia, String estado, LocalDateTime fecha) {}
-```
+**pom.xml:** `Spring Boot 2.7→3.2, Java 11→21, javax.validation→jakarta.validation-api.`
 
 ---
 

@@ -1,6 +1,6 @@
 title: "Guía IBM Bob — Banco Mercantil"
-description: "Guía práctica de adopción de IBM Bob para desarrolladores del core bancario — 6 casos de uso Java con prompts listos para copiar"
-theme: minima
+description: "Guía práctica de adopción de IBM Bob para desarrolladores del core bancario"
+theme: jekyll-theme-cayman
 
 markdown: kramdown
 highlighter: rouge
@@ -11,20 +11,13 @@ kramdown:
 
 plugins:
   - jekyll-relative-links
-  - jekyll-optional-front-matter
-  - jekyll-readme-index
 
 relative_links:
   enabled: true
   collections: true
 
-optional_front_matter:
-  remove_originals: true
-
-readme_index:
-  enabled: true
-
 exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
+  - codigo/

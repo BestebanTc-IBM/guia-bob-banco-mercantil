@@ -1,16 +1,19 @@
 ---
-title: "Caso 1 — Ask Mode: Comprensión de Lógica Financiera"
+title: "Caso 1 — Ask Mode: Lógica Financiera"
+layout: default
 ---
+
+<div class="breadcrumb">📍 <a href="/guia-bob-banco-mercantil/">Inicio</a> › <a href="/guia-bob-banco-mercantil/FUNDAMENTOS">Fundamentos</a> › Caso 1</div>
 
 # Caso 1 — Ask Mode: Comprensión de Lógica Financiera
 
-> **Modo:** 🔵 Ask | **Tiempo:** 10 min | **Nivel:** Básico — sin modificar código
+> **Modo:** 🔵 Ask &nbsp;|&nbsp; **Tiempo:** 10 min &nbsp;|&nbsp; **Nivel:** Básico — sin modificar código
 
 ---
 
 ## Contexto del Caso
 
-Eres nuevo en el equipo de **Core Bancario**. Te asignan revisar el módulo de cálculo de comisiones interbancarias, que nadie ha tocado en 3 años. Sin comentarios, 200 líneas, métodos encadenados.
+Eres nuevo en el equipo de **Core Bancario**. Te asignan revisar el módulo de cálculo de comisiones interbancarias, que nadie en el equipo ha tocado en 3 años. El archivo tiene 200 líneas, está sin comentarios y tiene varios métodos encadenados.
 
 **Objetivo:** Usar Bob en modo Ask para entender completamente la lógica antes de cualquier cambio.
 
@@ -18,7 +21,7 @@ Eres nuevo en el equipo de **Core Bancario**. Te asignan revisar el módulo de c
 
 ## Código de Partida
 
-Abre [`/codigo/caso-01/ComisionService.java`](/codigo/caso-01/ComisionService.java) del repositorio.
+Descarga [`ComisionService.java`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-01/ComisionService.java) del repositorio y ábrelo en tu IDE.
 
 ```java
 // ComisionService.java
@@ -30,8 +33,9 @@ public class ComisionService {
     private static final BigDecimal COMISION_MAXIMA         = new BigDecimal("500.00");
 
     public BigDecimal calcularComision(BigDecimal monto, String tipoCuenta, boolean esClientePremium) {
-        // ... ver archivo completo
+        // ...
     }
+    // ver archivo completo en el repositorio
 }
 ```
 
@@ -39,12 +43,11 @@ public class ComisionService {
 
 ## Paso a Paso con Bob
 
-### Paso 1 — Modo Ask
-Selecciona **🔵 Ask** en el panel de Bob.
-> No modifica archivos. Es completamente seguro para exploración.
+### Paso 1 — Selecciona 🔵 Ask
+> Solo queremos entender, no modificar. Ask es completamente seguro.
 
 ### Paso 2 — Adjunta el archivo
-Arrastra `ComisionService.java` al chat o escribe `@ComisionService.java`.
+Arrastra `ComisionService.java` al chat de Bob, o escribe `@ComisionService.java`.
 
 ### Paso 3 — Primer prompt: Visión general
 
@@ -81,7 +84,8 @@ montos negativos, montos exactamente iguales al umbral de $50,000.
 
 ## ✅ Resultado Esperado
 
-Al terminar deberás poder responder sin mirar el código:
+Al terminar los tres prompts deberás poder responder sin mirar el código:
+
 - [ ] ¿Cuál es la tasa para un cliente premium?
 - [ ] ¿Qué pasa con una cuenta de tipo "EMPRESARIAL"?
 - [ ] ¿Qué comisión paga alguien que transfiere exactamente $50,000?
@@ -93,10 +97,12 @@ Al terminar deberás poder responder sin mirar el código:
 
 1. **Ask Mode no modifica archivos**: Seguro para exploración en código de producción.
 2. **Bob entiende dominio bancario**: No necesitas explicarle qué es una tasa interbancaria.
-3. **Prompts en cadena son más poderosos**: Cada respuesta enriquece el siguiente prompt.
+3. **Los prompts en cadena son más poderosos**: Cada respuesta enriquece el siguiente prompt.
 
 ---
 
-## ▶️ Siguiente Caso
+## Navegación
 
-👉 **[Caso 2 — Agent Mode: Corrección de Bug de Precisión](./caso-02-agent-bug-bigdecimal.md)**
+| ← Anterior | Siguiente → |
+|---|---|
+| [Fundamentos](../../FUNDAMENTOS.md) | [Caso 2 — Bug BigDecimal](./caso-02-agent-bug-bigdecimal.md) |

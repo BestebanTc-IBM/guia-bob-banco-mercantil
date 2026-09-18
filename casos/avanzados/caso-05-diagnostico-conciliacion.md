@@ -1,10 +1,13 @@
 ---
 title: "Caso 5 — Diagnóstico y Optimización de Conciliación"
+layout: default
 ---
+
+<div class="breadcrumb">📍 <a href="/guia-bob-banco-mercantil/">Inicio</a> › Caso 5 — Avanzado</div>
 
 # Caso 5 — Diagnóstico y Optimización de Proceso de Conciliación
 
-> **Modos:** 🔵 Ask → 🔴 Agent | **Tiempo:** 15 min | **Nivel:** Avanzado
+> **Modos:** 🔵 Ask → 🔴 Agent &nbsp;|&nbsp; **Tiempo:** 15 min &nbsp;|&nbsp; **Nivel:** Avanzado
 
 ---
 
@@ -29,17 +32,15 @@ for (TransaccionCore tc : transaccionesCore) {
 }
 ```
 
-Abre el código completo: [`/codigo/caso-05/ConciliacionBatchService.java`](/codigo/caso-05/ConciliacionBatchService.java).
+Descarga el código completo: [`ConciliacionBatchService.java`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-05/ConciliacionBatchService.java)
 
 ---
 
-## Parte 1 — Ask Mode: Diagnóstico
-
-Arrastra el archivo con **🔵 Ask** activado.
+## Parte 1 — 🔵 Ask: Diagnóstico
 
 ```
 Tengo adjunto ConciliacionBatchService.java.
-Este proceso debe manejar 500,000 registros y tarda más de 40 minutos.
+Este proceso debe manejar 500,000 registros y actualmente tarda más de 40 minutos.
 Analiza el código con criterio de rendimiento Java y dime:
 1. ¿Cuántos problemas de rendimiento identificas? Nómbralos técnicamente.
 2. Para cada problema, explica el impacto estimado con 500,000 registros.
@@ -50,9 +51,7 @@ No modifiques el archivo.
 
 ---
 
-## Parte 2 — Agent Mode: Refactorización
-
-Cambia a **🔴 Agent**:
+## Parte 2 — 🔴 Agent: Refactorización
 
 ```
 Basándote en el diagnóstico, refactoriza ConciliacionBatchService.java:
@@ -64,27 +63,28 @@ Basándote en el diagnóstico, refactoriza ConciliacionBatchService.java:
 Agrega un comentario breve en cada cambio explicando el motivo.
 ```
 
-### Validación obligatoria antes de liberar en producción
+### Validación obligatoria antes de liberar
 
 ```
 Verifica que el algoritmo refactorizado produce los mismos resultados para:
-- Una transacción en core y externo con el mismo monto.
-- Una transacción en core y externo con montos diferentes.
-- Una transacción en core que no existe en externo.
-- Una transacción en externo que no existe en core.
-Si hay diferencias en el comportamiento, corrígelas.
+- Transacción en core y externo con el mismo monto.
+- Transacción en core y externo con montos diferentes.
+- Transacción en core que no existe en externo.
+- Transacción en externo que no existe en core.
 ```
 
 ---
 
 ## 💡 Lo Que Aprendiste
 
-1. **Ask Mode para diagnóstico evita refactorizaciones en la dirección incorrecta.**
-2. **Bob conoce complejidad algorítmica** y razona sobre rendimiento, no solo sintaxis.
-3. **El prompt de validación es obligatorio** antes de cambios en procesos del cierre contable.
+1. **Ask Mode para diagnóstico**: Entender antes de actuar evita refactorizaciones incorrectas.
+2. **Bob conoce complejidad algorítmica** y razona sobre rendimiento.
+3. **El prompt de validación es obligatorio** en procesos que afectan el cierre contable.
 
 ---
 
-## ▶️ Siguiente Caso
+## Navegación
 
-👉 **[Caso 6 — Premium Java Package: Modernización Java 8/11 → 17/21](../premium/caso-06-premium-java-upgrade.md)**
+| ← Anterior | Siguiente → |
+|---|---|
+| [Caso 4 — Microservicio REST](./caso-04-plan-agent-microservicio-rest.md) | [Caso 6 — Premium Java ⭐](../premium/caso-06-premium-java-upgrade.md) |

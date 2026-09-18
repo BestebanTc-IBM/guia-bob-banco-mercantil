@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  <style>
+    /* ── Barra de navegación superior ── */
+    .top-nav {
+      background: #155799;
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .top-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+    }
+    .top-nav ul li a {
+      display: block;
+      padding: 12px 18px;
+      color: #ffffff !important;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      border-right: 1px solid rgba(255,255,255,0.15);
+      transition: background 0.2s;
+    }
+    .top-nav ul li a:hover {
+      background: rgba(255,255,255,0.15);
+      text-decoration: none;
+    }
+    .top-nav ul li.home-link a {
+      font-weight: 700;
+      background: rgba(255,255,255,0.1);
+    }
+    .top-nav ul li.active a {
+      background: rgba(255,255,255,0.2);
+      border-bottom: 3px solid #f0e040;
+    }
+    /* ── Oculta el header/footer de Cayman ── */
+    .page-header { display: none !important; }
+    .site-footer { display: none !important; }
+    /* ── Ajusta el contenido principal ── */
+    .main-content {
+      padding-top: 24px;
+      max-width: 860px;
+    }
+    /* ── Footer personalizado ── */
+    .custom-footer {
+      margin-top: 48px;
+      padding: 16px 0;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      font-size: 12px;
+      color: #57606a;
+    }
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      font-size: 13px;
+      color: #57606a;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .breadcrumb a { color: #155799; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    /* ── Código resaltado ── */
+    pre { background: #f6f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 16px; overflow-x: auto; }
+    code { font-size: 13px; }
+    /* ── Tablas ── */
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #d0d7de; padding: 8px 12px; text-align: left; }
+    th { background: #f6f8fa; font-weight: 600; }
+    tr:nth-child(even) { background: #f9fafb; }
+    /* ── Blockquotes ── */
+    blockquote { border-left: 4px solid #155799; margin: 0; padding: 8px 16px; background: #f0f5ff; border-radius: 0 6px 6px 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Barra de navegación superior -->
+  <nav class="top-nav">
+    <ul>
+      <li class="home-link"><a href="{{ '/' | relative_url }}">🏦 Inicio</a></li>
+      <li><a href="{{ '/FUNDAMENTOS' | relative_url }}">Fundamentos</a></li>
+      <li><a href="{{ '/casos/basicos/caso-01-ask-logica-financiera' | relative_url }}">Caso 1</a></li>
+      <li><a href="{{ '/casos/basicos/caso-02-agent-bug-bigdecimal' | relative_url }}">Caso 2</a></li>
+      <li><a href="{{ '/casos/basicos/caso-03-agent-pruebas-junit' | relative_url }}">Caso 3</a></li>
+      <li><a href="{{ '/casos/avanzados/caso-04-plan-agent-microservicio-rest' | relative_url }}">Caso 4</a></li>
+      <li><a href="{{ '/casos/avanzados/caso-05-diagnostico-conciliacion' | relative_url }}">Caso 5</a></li>
+      <li><a href="{{ '/casos/premium/caso-06-premium-java-upgrade' | relative_url }}">Caso 6 ⭐</a></li>
+      <li><a href="{{ '/GUIA-CONSOLIDADA' | relative_url }}">📄 PDF</a></li>
+    </ul>
+  </nav>
+
+  <main id="content" class="main-content" role="main">
+    {{ content }}
+  </main>
+
+  <footer class="custom-footer">
+    Guía IBM Bob · Banco Mercantil · 2025 &nbsp;|&nbsp;
+    <a href="{{ '/' | relative_url }}">Inicio</a> &nbsp;·&nbsp;
+    <a href="https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil" target="_blank">GitHub</a>
+  </footer>
+
+</body>
+</html>

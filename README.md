@@ -1,45 +1,15 @@
-# 🏦 Guía Práctica de IBM Bob — Banco Mercantil
+---
+title: Guía IBM Bob — Banco Mercantil
+layout: default
+---
+
+# Guía Práctica de IBM Bob — Banco Mercantil
 
 > **Objetivo:** Llevar a cualquier desarrollador —desde el más senior hasta el que nunca usó un agente de IA— a ser productivo con IBM Bob en una sola sesión de trabajo.
 
 ---
 
-## ¿Qué encontrarás aquí?
-
-Esta guía está organizada en tres niveles progresivos. Cada caso de uso es **autocontenido**: incluye el contexto bancario, el código de partida, los prompts exactos a usar y el resultado esperado.
-
----
-
-## 📚 Estructura del Repositorio
-
-```
-guia-bob-banco-mercantil/
-├── README.md                          ← Esta página
-├── FUNDAMENTOS.md                     ← Qué es Bob, modos y buenas prácticas
-├── GUIA-CONSOLIDADA.md                ← Guía completa unificada (ideal para PDF)
-│
-├── casos/
-│   ├── basicos/
-│   │   ├── caso-01-ask-logica-financiera.md
-│   │   ├── caso-02-agent-bug-bigdecimal.md
-│   │   └── caso-03-agent-pruebas-junit.md
-│   ├── avanzados/
-│   │   ├── caso-04-plan-agent-microservicio-rest.md
-│   │   └── caso-05-diagnostico-conciliacion.md
-│   └── premium/
-│       └── caso-06-premium-java-upgrade.md
-│
-└── codigo/
-    ├── caso-01/   ← ComisionService.java
-    ├── caso-02/   ← TransferenciaService.java (con bug intencional)
-    ├── caso-03/   ← CuentaValidatorService.java
-    ├── caso-05/   ← ConciliacionBatchService.java (versión lenta)
-    └── caso-06/   ← PagoService.java + pom.xml (Java 11 legado)
-```
-
----
-
-## 🗺️ Ruta de Aprendizaje Recomendada
+## Ruta de Aprendizaje Recomendada
 
 | Tiempo | Módulo | Descripción |
 |--------|--------|-------------|
@@ -55,7 +25,7 @@ guia-bob-banco-mercantil/
 
 ---
 
-## 🎯 Perfil del Lector
+## Perfil del Lector
 
 - **El que viene de un IDE clásico** (Eclipse, IntelliJ sin IA): aprenderá a delegar tareas repetitivas.
 - **El que ya usó GitHub Copilot**: entenderá por qué Bob razona sobre el proyecto completo, no solo el archivo abierto.
@@ -63,7 +33,7 @@ guia-bob-banco-mercantil/
 
 ---
 
-## ⚙️ Requisitos Previos
+## Requisitos Previos
 
 - Acceso a IBM Bob (extensión instalada en VS Code o IntelliJ)
 - JDK 11+ instalado localmente
@@ -72,16 +42,12 @@ guia-bob-banco-mercantil/
 
 ---
 
-## 📄 Versión para PDF
+## Versión para PDF
 
-Abre [`GUIA-CONSOLIDADA.md`](./GUIA-CONSOLIDADA.md) para la versión imprimible con todo el contenido unificado.
-
----
-
-## 🏁 ¿Por dónde empezar?
-
-> **Empieza por [FUNDAMENTOS.md](./FUNDAMENTOS.md)** — 10 minutos que resolverán el 80% de las dudas iniciales.
+Abre [GUIA-CONSOLIDADA](./GUIA-CONSOLIDADA.md) para la versión imprimible con todo el contenido unificado.
 
 ---
+
+> **Por dónde empezar:** Lee primero [FUNDAMENTOS](./FUNDAMENTOS.md) — 10 minutos que resolverán el 80% de las dudas iniciales.
 
 *Guía preparada para la PoC de IBM Bob · Banco Mercantil · 2025*

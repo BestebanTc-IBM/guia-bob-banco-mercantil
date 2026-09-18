@@ -1,6 +1,9 @@
 ---
 title: Fundamentos de IBM Bob
+layout: default
 ---
+
+<div class="breadcrumb">📍 <a href="/guia-bob-banco-mercantil/">Inicio</a> › Fundamentos</div>
 
 # Fundamentos de IBM Bob
 
@@ -26,7 +29,7 @@ title: Fundamentos de IBM Bob
 
 Úsalo cuando quieres **entender** algo: una clase que heredaste, un algoritmo de cálculo de comisiones, un proceso batch que nadie documentó.
 
-Bob lee los archivos que le señalas y responde en lenguaje natural. **No modifica ningún archivo.**
+Bob lee los archivos y responde en lenguaje natural. **No modifica ningún archivo.**
 
 **Cuándo usarlo en el banco:**
 - Entender lógica de cálculo de intereses o comisiones heredada
@@ -37,7 +40,7 @@ Bob lee los archivos que le señalas y responde en lenguaje natural. **No modifi
 
 ### 🟡 Modo Plan — *"Diseñemos antes de escribir"*
 
-Úsalo cuando tienes un requerimiento nuevo y quieres que Bob **proponga una arquitectura o plan de implementación** antes de generar código.
+Úsalo cuando quieres que Bob **proponga una arquitectura o plan de implementación** antes de generar código.
 
 **Cuándo usarlo en el banco:**
 - Diseñar un nuevo microservicio de consulta de movimientos
@@ -48,43 +51,35 @@ Bob lee los archivos que le señalas y responde en lenguaje natural. **No modifi
 
 ### 🔴 Modo Agent — *"Hazlo tú, yo reviso"*
 
-Es el modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de tu proyecto.
+El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de tu proyecto.
 
-> ⚠️ **Consejo Senior:** Empieza siempre en Ask o Plan para entender el contexto. Cambia a Agent solo cuando ya sabes qué quieres que Bob haga. Esto evita cambios inesperados en archivos críticos.
+> ⚠️ **Consejo Senior:** Empieza siempre en Ask o Plan para entender el contexto. Cambia a Agent solo cuando ya sabes qué quieres que Bob haga. Siempre revisa el diff antes de aceptar cambios en archivos críticos.
 
 ---
 
 ## Buenas Prácticas de Prompts
 
-### ✅ Prompts que funcionan bien
+### ✅ Estructura de un buen prompt bancario
 
 ```
-"Tengo adjunto el archivo ComisionService.java.
-Explícame paso a paso qué hace el método calcularComisionInterbancaria()
-y qué casos borde no están cubiertos."
+[ROL]         Actúa como desarrollador Java senior bancario
+[CONTEXTO]    Tengo adjunto [archivo]. Este código hace [X].
+[TAREA]       Necesito que [acción concreta].
+[RESTRICCIÓN] No cambies [límites importantes].
+[FORMATO]     Devuelve [formato de respuesta deseado].
 ```
 
 ### ❌ Prompts que dan resultados pobres
 
 ```
-"Arregla el código"         ← Sin contexto, sin objetivo claro
-"Escribe una API"           ← Sin especificaciones
-"Mejora esto"               ← Bob no sabe qué considera mejora para ti
-```
-
-### 🎯 Estructura de un buen prompt bancario
-
-```
-[ROL]        Actúa como desarrollador Java senior bancario
-[CONTEXTO]   Tenemos adjunto [archivo]. Este código hace [X].
-[TAREA]      Necesito que [acción concreta].
-[RESTRICCIÓN] No cambies [límites importantes].
-[FORMATO]    Devuelve [formato de respuesta deseado].
+"Arregla el código"     ← Sin contexto
+"Escribe una API"       ← Sin especificaciones
+"Mejora esto"           ← Sin criterio claro
 ```
 
 ---
 
-## Resumen de Atajos Mentales
+## Tabla de Decisión de Modo
 
 | Quiero... | Modo |
 |---|---|

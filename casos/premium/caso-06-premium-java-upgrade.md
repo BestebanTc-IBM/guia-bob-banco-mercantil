@@ -1,10 +1,13 @@
 ---
-title: "Caso 6 — Premium Java Package: Modernización Java 11 → 21"
+title: "Caso 6 — Premium Java Package: Java 11 → 21"
+layout: default
 ---
+
+<div class="breadcrumb">📍 <a href="/guia-bob-banco-mercantil/">Inicio</a> › Caso 6 — Premium ⭐</div>
 
 # Caso 6 — Premium Java Package: Modernización Java 8/11 → 17/21
 
-> **Capacidad:** IBM Bob Premium Package for Java | **Tiempo:** 20 min | **Nivel:** Especial
+> **Capacidad:** IBM Bob Premium Package for Java &nbsp;|&nbsp; **Tiempo:** 20 min &nbsp;|&nbsp; **Nivel:** Especial
 
 ---
 
@@ -30,7 +33,9 @@ Infraestructura aprobó la migración del core bancario de **Java 11 a Java 21 L
 
 ## Código de Partida
 
-Abre [`/codigo/caso-06/PagoService.java`](/codigo/caso-06/PagoService.java) y [`/codigo/caso-06/pom.xml`](/codigo/caso-06/pom.xml).
+Descarga del repositorio:
+- [`PagoService.java`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-06/PagoService.java)
+- [`pom.xml`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-06/pom.xml)
 
 ---
 
@@ -38,7 +43,7 @@ Abre [`/codigo/caso-06/PagoService.java`](/codigo/caso-06/PagoService.java) y [`
 
 ### Paso 1 — Reporte de Migración (Ask Mode)
 
-Adjunta `PagoService.java` y `pom.xml` con **🔵 Ask**:
+Adjunta `PagoService.java` y `pom.xml`:
 
 ```
 Actúa como experto en modernización Java con IBM Bob Premium Java Package.
@@ -120,5 +125,10 @@ public record PagoResponse(String referencia, String estado, LocalDateTime fecha
 | 5 | Ask → Agent | Diagnóstico + optimización de rendimiento |
 | 6 | Premium Java | Modernización de plataforma asistida |
 
-👉 **[Volver al inicio](../../README.md)**  
-📄 **[Ver guía consolidada para PDF](../../GUIA-CONSOLIDADA.md)**
+---
+
+## Navegación
+
+| ← Anterior | |
+|---|---|
+| [Caso 5 — Conciliación](../avanzados/caso-05-diagnostico-conciliacion.md) | [🏦 Volver al Inicio](../../README.md) |

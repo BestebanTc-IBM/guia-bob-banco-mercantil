@@ -1,10 +1,13 @@
 ---
-title: "Caso 4 — Plan → Agent: Microservicio REST Bancario"
+title: "Caso 4 — Plan → Agent: Microservicio REST"
+layout: default
 ---
+
+<div class="breadcrumb">📍 <a href="/guia-bob-banco-mercantil/">Inicio</a> › Caso 4 — Avanzado</div>
 
 # Caso 4 — Plan → Agent: Diseño e Implementación de Microservicio REST
 
-> **Modos:** 🟡 Plan → 🔴 Agent | **Tiempo:** 15 min | **Nivel:** Avanzado
+> **Modos:** 🟡 Plan → 🔴 Agent &nbsp;|&nbsp; **Tiempo:** 15 min &nbsp;|&nbsp; **Nivel:** Avanzado
 
 ---
 
@@ -12,13 +15,11 @@ title: "Caso 4 — Plan → Agent: Microservicio REST Bancario"
 
 Canales Digitales necesita un microservicio REST para consulta de movimientos con **bloqueo preventivo** de transacciones sospechosas. El tech lead quiere el diseño aprobado antes de escribir una línea de código.
 
-**Objetivo:** Usar Plan Mode para arquitectura validable, luego Agent Mode para implementar.
+**Objetivo:** Plan Mode para arquitectura validable → Agent Mode para implementar.
 
 ---
 
-## Parte 1 — Modo Plan: Diseñar Antes de Codificar
-
-### Selecciona 🟡 Plan
+## Parte 1 — Modo 🟡 Plan: Diseñar Antes de Codificar
 
 ### Prompt de diseño arquitectónico
 
@@ -48,29 +49,24 @@ riesgos técnicos. No escribas código todavía.
 
 ---
 
-## Parte 2 — Modo Agent: Implementar el Plan
-
-### Cambia a 🔴 Agent
+## Parte 2 — Modo 🔴 Agent: Implementar el Plan
 
 ```
 Basándote en el plan que acabamos de diseñar, genera los 5 archivos:
-
-1. MovimientoDTO.java — id (Long), fecha (LocalDate), monto (BigDecimal),
-   tipo (String), descripcion (String), saldoResultante (BigDecimal).
-2. BloqueoRequest.java — motivo (String, max 200 chars), duracionMinutos (int, 1-1440).
-3. MovimientoService.java — interfaz con los 4 métodos del plan.
-4. MovimientoServiceImpl.java — en memoria con 5 movimientos hardcodeados
-   para la cuenta "0123456789".
-5. MovimientoController.java — con los 3 endpoints y validación de X-User-Role.
+1. MovimientoDTO.java
+2. BloqueoRequest.java — con Bean Validation
+3. MovimientoService.java — interfaz
+4. MovimientoServiceImpl.java — en memoria con 5 movimientos de ejemplo
+5. MovimientoController.java — con los 3 endpoints y validación de X-User-Role
 
 Paquete base: com.bancomercantil.movimientos
 ```
 
-### Verifica la implementación
+### Verificación
 
 ```
 Revisa el controlador generado y confirma:
-1. ¿El DELETE de desbloqueo también valida X-User-Role?
+1. ¿El DELETE también valida X-User-Role?
 2. ¿obtenerMovimientos filtra correctamente cuando fecha y tipo son null?
 3. ¿Las respuestas de error (403, 404) son consistentes con REST estándar?
 Si hay algo incorrecto, corrígelo.
@@ -86,6 +82,8 @@ Si hay algo incorrecto, corrígelo.
 
 ---
 
-## ▶️ Siguiente Caso
+## Navegación
 
-👉 **[Caso 5 — Diagnóstico y Optimización de Conciliación](./caso-05-diagnostico-conciliacion.md)**
+| ← Anterior | Siguiente → |
+|---|---|
+| [Caso 3 — Pruebas JUnit](../basicos/caso-03-agent-pruebas-junit.md) | [Caso 5 — Conciliación](./caso-05-diagnostico-conciliacion.md) |

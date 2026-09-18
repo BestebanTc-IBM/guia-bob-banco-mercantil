@@ -1,10 +1,13 @@
 ---
-title: "Caso 3 — Agent Mode: Generación de Pruebas JUnit/Mockito"
+title: "Caso 3 — Agent Mode: Pruebas JUnit/Mockito"
+layout: default
 ---
+
+<div class="breadcrumb">📍 <a href="/guia-bob-banco-mercantil/">Inicio</a> › Caso 3</div>
 
 # Caso 3 — Agent Mode: Generación de Pruebas JUnit/Mockito
 
-> **Modo:** 🔴 Agent | **Tiempo:** 10 min | **Nivel:** Básico — generación de código de pruebas
+> **Modo:** 🔴 Agent &nbsp;|&nbsp; **Tiempo:** 10 min &nbsp;|&nbsp; **Nivel:** Básico
 
 ---
 
@@ -12,23 +15,21 @@ title: "Caso 3 — Agent Mode: Generación de Pruebas JUnit/Mockito"
 
 El módulo de validación de cuentas tiene **0% de cobertura de pruebas unitarias**. Auditoría interna próxima.
 
-**Objetivo:** Generar pruebas JUnit 5 y Mockito para `CuentaValidatorService.java`, cubriendo casos borde bancarios críticos.
+**Objetivo:** Generar pruebas JUnit 5 + Mockito para `CuentaValidatorService.java`, cubriendo casos borde bancarios críticos.
 
 ---
 
 ## Código de Partida
 
-Abre [`/codigo/caso-03/CuentaValidatorService.java`](/codigo/caso-03/CuentaValidatorService.java).
+Descarga [`CuentaValidatorService.java`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-03/CuentaValidatorService.java) del repositorio.
 
 ---
 
 ## Paso a Paso con Bob
 
-### Paso 1 — Modo Agent + archivo adjunto
+### Paso 1 — Modo 🔴 Agent + archivo adjunto
 
-Selecciona **🔴 Agent** y adjunta `CuentaValidatorService.java`.
-
-### Paso 2 — Prompt de análisis de casos (primero)
+### Paso 2 — Listar casos primero
 
 ```
 Tengo adjunto CuentaValidatorService.java.
@@ -40,14 +41,13 @@ cubrirse para el método puedeDebitar(), incluyendo:
 No escribas código todavía, solo lista los casos.
 ```
 
-### Paso 3 — Prompt de generación
+### Paso 3 — Generar las pruebas
 
 ```
 Ahora genera el archivo CuentaValidatorServiceTest.java con JUnit 5 y Mockito.
 Incluye:
 1. Todos los casos que listaste para puedeDebitar().
-2. Al menos 3 casos para esNumeroCuentaValido(): un número válido, uno con letras,
-   uno con longitud incorrecta.
+2. Al menos 3 casos para esNumeroCuentaValido().
 3. Al menos 4 casos para determinarTipoOperacion().
 4. Usa @DisplayName() con descripciones en español legibles por negocio.
 5. Usa @ParameterizedTest donde aplique.
@@ -60,8 +60,8 @@ Incluye:
 
 ```java
 @Test
-@DisplayName("Debe rechazar débito cuando el monto resultante supera el límite de sobregiro")
-void debeRechazarDebito_cuandoSaldoResultanteExcedeLimiteSobregiro() {
+@DisplayName("Debe rechazar débito cuando el monto supera el límite de sobregiro")
+void debeRechazarDebito_cuandoExcedeLimiteSobregiro() {
     BigDecimal saldo = new BigDecimal("-4999.00");
     BigDecimal monto = new BigDecimal("1.01"); // resultado: -5000.01
 
@@ -73,12 +73,14 @@ void debeRechazarDebito_cuandoSaldoResultanteExcedeLimiteSobregiro() {
 
 ## 💡 Lo Que Aprendiste
 
-1. **El patrón listar → generar**: Pedir la lista primero produce pruebas más completas.
-2. **@DisplayName en español**: Las pruebas son documentación viva para el equipo bancario.
-3. **Los casos borde bancarios son del dominio**: Bob necesita que se los describas explícitamente.
+1. **El patrón listar → generar** produce pruebas más completas.
+2. **@DisplayName en español** hace que las pruebas sean documentación del negocio.
+3. **Los casos borde bancarios son del dominio**: Bob necesita que se los describas.
 
 ---
 
-## ▶️ Siguiente Caso
+## Navegación
 
-👉 **[Caso 4 — Plan → Agent: Microservicio REST Bancario](../avanzados/caso-04-plan-agent-microservicio-rest.md)**
+| ← Anterior | Siguiente → |
+|---|---|
+| [Caso 2 — Bug BigDecimal](./caso-02-agent-bug-bigdecimal.md) | [Caso 4 — Microservicio REST](../avanzados/caso-04-plan-agent-microservicio-rest.md) |
