@@ -42,6 +42,8 @@ Bob lee los archivos y responde en lenguaje natural. **No modifica ningún archi
 
 Úsalo cuando quieres que Bob **proponga una arquitectura o plan de implementación** antes de generar código.
 
+Bob producirá una lista de pasos, componentes sugeridos, clases a crear y posibles riesgos. Puedes ajustar el plan antes de ejecutarlo.
+
 **Cuándo usarlo en el banco:**
 - Diseñar un nuevo microservicio de consulta de movimientos
 - Planificar la migración de un servicio SOAP a REST
@@ -51,31 +53,208 @@ Bob lee los archivos y responde en lenguaje natural. **No modifica ningún archi
 
 ### 🔴 Modo Agent — *"Hazlo tú, yo reviso"*
 
-El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de tu proyecto.
+El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de tu proyecto. Ejecuta acciones de forma autónoma, paso a paso, y te pide confirmación cuando lo necesita.
+
+**Cuándo usarlo en el banco:**
+- Corregir un bug en un cálculo monetario
+- Crear pruebas unitarias para una clase existente
+- Implementar el plan que diseñaste en Modo Plan
 
 > ⚠️ **Consejo Senior:** Empieza siempre en Ask o Plan para entender el contexto. Cambia a Agent solo cuando ya sabes qué quieres que Bob haga. Siempre revisa el diff antes de aceptar cambios en archivos críticos.
 
 ---
 
+## La Interfaz en 60 Segundos
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  IBM Bob — Panel Lateral                                │
+│                                                         │
+│  [Ask] [Plan] [Agent]   ← Selector de modo             │
+│  ─────────────────────────────────────────────         │
+│  📎 Archivos adjuntos   ← Arrastra archivos aquí       │
+│  ─────────────────────────────────────────────         │
+│  Historial de chat      ← Conversación completa        │
+│  ─────────────────────────────────────────────         │
+│  [ Escribe tu prompt...              ] [Enviar]         │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Tres acciones clave que debes conocer:**
+1. **Adjuntar un archivo:** Arrastra el archivo al chat o usa `@nombre-del-archivo` en el prompt.
+2. **Cambiar de modo:** Haz clic en el selector de modo antes de enviar. El modo no cambia la conversación, solo el comportamiento.
+3. **Iniciar nueva sesión:** Cuando cambies de tarea, inicia un nuevo chat. El contexto acumulado puede confundir a Bob en tareas muy diferentes.
+
+---
+
 ## Buenas Prácticas de Prompts
 
-### ✅ Estructura de un buen prompt bancario
+> **La calidad del output de Bob depende directamente de la calidad del input.** Un prompt pobre con código bancario crítico es el camino más rápido a resultados inútiles o peligrosos.
+
+---
+
+### 🎯 Anatomía de un prompt bancario de calidad
+
+Cada componente cumple una función. Ninguno es decorativo.
 
 ```
-[ROL]         Actúa como desarrollador Java senior bancario
-[CONTEXTO]    Tengo adjunto [archivo]. Este código hace [X].
-[TAREA]       Necesito que [acción concreta].
-[RESTRICCIÓN] No cambies [límites importantes].
-[FORMATO]     Devuelve [formato de respuesta deseado].
+[ROL]         Actúa como desarrollador Java senior especializado en core bancario
+[CONTEXTO]    Tengo adjunto TransferenciaService.java. Este servicio procesa
+              transferencias interbancarias en tiempo real usando la API de SWIFT.
+              El método ejecutarTransferencia() es llamado desde 3 servicios distintos.
+[TAREA]       Necesito que detectes todos los puntos donde se usan tipos primitivos
+              (double, float) para representar montos monetarios y los refactorices
+              a BigDecimal con escala 2 y RoundingMode.HALF_UP.
+[RESTRICCIÓN] No cambies las firmas públicas de los métodos. No toques la capa de
+              persistencia. El campo 'montoOriginal' debe mantenerse como está.
+[FORMATO]     Muéstrame primero la lista de cambios que harás, luego el código
+              corregido completo, y al final un resumen de riesgo de cada cambio.
 ```
 
-### ❌ Prompts que dan resultados pobres
+**¿Por qué funciona cada parte?**
+
+| Componente | Sin él, Bob... | Con él, Bob... |
+|---|---|---|
+| **ROL** | responde de forma genérica | aplica criterio y vocabulario bancario |
+| **CONTEXTO** | asume lo que no sabe | entiende el impacto real del cambio |
+| **TAREA** | interpreta libremente el objetivo | ejecuta exactamente lo que necesitas |
+| **RESTRICCIÓN** | puede romper contratos de API o afectar otros servicios | respeta los límites críticos del sistema |
+| **FORMATO** | devuelve lo que le parece conveniente | organiza la respuesta para tu flujo de revisión |
+
+---
+
+### 📈 Niveles de prompt: del básico al experto
+
+La misma necesidad, tres niveles de precisión. Los tres son válidos — el nivel correcto depende de cuánto contexto ya tiene Bob en la sesión.
+
+#### Nivel 1 — Básico (sirve para exploración inicial)
+```
+"Explícame qué hace el método calcularComision() en el archivo adjunto."
+```
+✔ Útil cuando recién llegaste a un código desconocido y solo quieres orientarte.
+
+---
+
+#### Nivel 2 — Intermedio (sirve para tareas concretas)
+```
+"Tengo adjunto ComisionService.java. El método calcularComisionInterbancaria()
+parece no estar aplicando la exención para cuentas VIP (tipo PREMIUM).
+Analiza la lógica y dime si el bug está en la condición del if o en
+cómo se está cargando el tipo de cuenta desde el parámetro de entrada."
+```
+✔ Útil cuando ya sabes qué área tiene el problema pero no la causa exacta.
+
+---
+
+#### Nivel 3 — Experto (sirve para cambios en código crítico)
+```
+"Actúa como desarrollador Java senior con experiencia en sistemas de pagos ISO 20022.
+Tengo adjuntos: ComisionService.java, CuentaRepository.java y TipoCuenta.java.
+
+El servicio calcula comisiones interbancarias. El bug reportado es:
+las cuentas con tipo PREMIUM no reciben la exención del 100% en transferencias
+menores a $500 USD, a pesar de que la condición esTypeEnum.PREMIUM existe en el código.
+
+Necesito que:
+1. Traces el flujo completo desde calcularComisionInterbancaria() hasta
+   la consulta del tipo de cuenta.
+2. Identifiques el punto exacto donde la condición falla.
+3. Propongas la corrección con el menor impacto posible en otros tipos de cuenta.
+
+Restricciones:
+- No modificar CuentaRepository.java (está en producción congelada).
+- La corrección debe ser retrocompatible con cuentas STANDARD y CORPORATE.
+
+Formato: Diagnóstico → Causa raíz → Código corregido → Prueba unitaria que
+confirme el fix."
+```
+✔ Útil para bugs críticos, migraciones o cambios en código de alto impacto.
+
+---
+
+### ✅ Antes y después: prompts reales mejorados
+
+| ❌ Prompt pobre | ✅ Prompt mejorado | Por qué mejora |
+|---|---|---|
+| `"Arregla el código"` | `"El método procesarPago() en PagoService.java lanza NullPointerException cuando cuenta es null. Agrega validación de entrada al inicio del método y lanza IllegalArgumentException con mensaje descriptivo."` | Tiene contexto, causa y resultado esperado |
+| `"Escribe una API REST"` | `"Crea un endpoint GET /cuentas/{id}/movimientos en Spring Boot que reciba un rango de fechas como parámetros opcionales y devuelva una lista de MovimientoDTO. Sin dependencias externas, solo Spring Web y Java estándar."` | Especifica tecnología, contrato y restricciones |
+| `"Mejora esto"` | `"Revisa ConciliacionService.java enfocándote solo en rendimiento. El proceso tarda 45 segundos para 10.000 registros. Identifica el cuello de botella más evidente sin cambiar la lógica de negocio."` | Define el criterio de mejora y el alcance |
+| `"¿Está bien este código?"` | `"Revisa el manejo de excepciones en TransferenciaService.java. ¿Hay algún caso donde una excepción podría tragarse silenciosamente y dejar una transferencia en estado inconsistente?"` | Pregunta por un riesgo específico, no aprobación general |
+
+---
+
+### ⚠️ Errores frecuentes al usar Bob con código bancario
+
+**1. Adjuntar demasiados archivos sin orientar a Bob**
+```
+❌ [Adjunta 15 archivos] "¿Qué está mal aquí?"
+✅ [Adjunta 2 archivos relevantes] "El error ocurre en PagoService.java línea 47.
+   Adjunto también CuentaDTO.java porque es el objeto que se pasa al método."
+```
+
+**2. Pedir cambios globales sin restricciones**
+```
+❌ "Refactoriza todo el servicio para usar patrones modernos."
+✅ "Refactoriza únicamente el método validarCuenta() para reducir su complejidad
+   ciclomática. No toques los demás métodos del servicio."
+```
+
+**3. No especificar el formato cuando el output va a revisión**
+```
+❌ "Genera las pruebas unitarias para este servicio."
+✅ "Genera pruebas JUnit 5 con Mockito para validarSaldo(). Necesito:
+   - Un test por cada caso (saldo suficiente, insuficiente, cuenta bloqueada)
+   - Nombres de método en español: deberiaX_cuandoY
+   - Sin llamadas reales a base de datos, todo mockeado."
+```
+
+**4. Pedir a Bob que adivine el contexto de negocio**
+```
+❌ "¿Es correcto este cálculo?"
+✅ "Según la regulación SUDEBAN vigente, las transferencias entre bancos distintos
+   deben aplicar una comisión del 0.5% con tope de 50 BsD.
+   ¿El método calcularComision() en el archivo adjunto implementa esta regla
+   correctamente para todos los casos?"
+```
+
+---
+
+### 🔁 El ciclo de trabajo recomendado
+
+Para tareas en código crítico bancario, este flujo reduce el riesgo:
 
 ```
-"Arregla el código"     ← Sin contexto
-"Escribe una API"       ← Sin especificaciones
-"Mejora esto"           ← Sin criterio claro
+1. Ask Mode   → "Explícame cómo funciona X antes de que toque algo"
+               ↓
+2. Ask Mode   → "¿Qué riesgos hay si cambio Y?"
+               ↓
+3. Plan Mode  → "Proponme los pasos para implementar Z"
+               ↓
+4. (Revisar y ajustar el plan con tu equipo)
+               ↓
+5. Agent Mode → "Ejecuta el paso 1 del plan que acordamos"
+               ↓
+6. Ask Mode   → "Revisa el cambio que acabas de hacer. ¿Hay algo que hayas
+                 pasado por alto dado que este método es llamado desde [X]?"
 ```
+
+> 💡 **No tienes que empezar siempre desde el paso 1.** Si ya conoces el código, puedes ir directamente a Plan o Agent. El punto clave es: **no uses Agent Mode en código crítico sin haber entendido el contexto primero.**
+
+---
+
+## Conceptos que confunden al principio
+
+**"¿Bob tiene acceso a producción?"**
+No. Bob trabaja exclusivamente con los archivos que tú le compartes en la sesión. Nunca accede a bases de datos, servidores ni sistemas externos.
+
+**"¿Guarda mi código en la nube?"**
+Depende de la configuración del tenant de tu organización. En entornos empresariales IBM, el código se procesa con las mismas políticas de datos que cualquier otro servicio IBM en tu contrato.
+
+**"Si Bob modifica un archivo, ¿puedo deshacer?"**
+Sí. Los cambios de Bob en Modo Agent se muestran como diferencias (diff) antes de aplicarse, y VS Code / IntelliJ mantienen el historial de deshacer normal.
+
+**"¿Funciona con COBOL?"**
+Sí. Bob tiene capacidades para COBOL, JCL y otros lenguajes de mainframe. Los casos de uso de esta guía usan Java por ser el más común en el equipo, pero los principios aplican igual.
 
 ---
 
@@ -95,6 +274,10 @@ El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de 
 
 ## ▶️ Siguiente Paso
 
+Cuando termines de leer esta sección, ve directamente al primer caso de uso:
+
 👉 **[Caso 1 — Ask Mode: Lógica Financiera](./casos/basicos/caso-01-ask-logica-financiera.md)**
 
-*Tiempo estimado de este módulo: 10 minutos*
+---
+
+*Tiempo estimado de este módulo: 15 minutos*
