@@ -28,8 +28,10 @@ layout: default
 
 ## Perfil del Lector
 
+Esta guía está pensada para tres perfiles simultáneamente:
+
 - **El que viene de un IDE clásico** (Eclipse, IntelliJ sin IA): aprenderá a delegar tareas repetitivas.
-- **El que ya usó GitHub Copilot**: entenderá por qué Bob razona sobre el proyecto completo, no solo el archivo abierto.
+- **El que ya usó algún asistente de código**: entenderá por qué Bob va más allá del autocompletado y razona sobre el contexto completo del proyecto.
 - **El desarrollador senior Java/COBOL**: verá casos reales del core bancario y migración de legado.
 
 ---

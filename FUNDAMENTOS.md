@@ -13,7 +13,9 @@ layout: default
 
 ## ¿Qué es IBM Bob y en qué se diferencia del autocompletado?
 
-| Característica | Autocompletado clásico (Copilot básico) | IBM Bob |
+La pregunta más común entre desarrolladores senior es: *"¿No es lo mismo que el autocompletado del IDE?"*. La respuesta corta es **no**.
+
+| Característica | Autocompletado clásico | IBM Bob |
 |---|---|---|
 | **Contexto** | El archivo que tienes abierto | Todo el proyecto, archivos relacionados, historial de la sesión |
 | **Interacción** | Sugerencias de línea / bloque | Conversación de ida y vuelta con razonamiento |
