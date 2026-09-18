@@ -13,13 +13,64 @@ layout: default
 
 Todos los casos de uso tienen archivos Java listos para abrir en IBM Bob. Elige la opción que mejor se adapte a ti:
 
-### Opción A — Con Git (si ya lo tienes instalado)
+---
+
+### Opción A — Díselo a Bob (la más fácil, sin saber de Git)
+
+Cambia a **🔴 Agent Mode**, copia el siguiente prompt tal como está y envíalo. Bob se encargará de todo:
+
+```
+Actúa como ingeniero DevOps. Necesito que clones un repositorio de GitHub
+en mi computadora para usarlo como proyecto de práctica.
+
+PASOS QUE DEBES EJECUTAR:
+
+1. Detecta el sistema operativo actual.
+
+2. Determina la carpeta de destino según el SO:
+   - Windows: usa C:\Users\<usuario_actual>\Documents\proyectos-bob\
+     Si la carpeta no existe, créala.
+   - macOS / Linux: usa ~/Documents/proyectos-bob/
+     Si la carpeta no existe, créala con mkdir -p.
+
+3. Verifica si Git está instalado ejecutando: git --version
+   - Si Git NO está instalado, detente y dime exactamente cómo instalarlo
+     para mi sistema operativo antes de continuar.
+   - Si Git SÍ está instalado, continúa al paso 4.
+
+4. Verifica si la carpeta guia-bob-banco-mercantil/ ya existe dentro
+   del destino para no clonar dos veces.
+   - Si ya existe: infórmame y no hagas nada más.
+   - Si no existe: ejecuta el clone.
+
+5. Clona el repositorio con este comando exacto:
+   git clone https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil.git
+
+   Ejecuta el clone dentro de la carpeta de destino del paso 2.
+
+6. Verifica que el clone fue exitoso comprobando que exista el archivo
+   guia-bob-banco-mercantil/index.md en la carpeta de destino.
+
+7. Reporta:
+   - Ruta absoluta completa donde quedó el repositorio.
+   - Confirmación de que el archivo index.md existe.
+   - Instrucción exacta para abrir esa carpeta en IBM Bob
+     (Archivo → Abrir carpeta → [ruta completa]).
+```
+
+> ⚠️ **Importante:** El prompt está en **Agent Mode** porque necesita ejecutar comandos en tu sistema. Si Bob te pide confirmación antes de ejecutar algún paso, acepta.
+
+---
+
+### Opción A.1 — Con Git manualmente (si ya sabes usarlo)
 
 ```bash
 git clone https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil.git
 ```
 
 Abre IBM Bob → **Archivo → Abrir carpeta** → selecciona la carpeta `guia-bob-banco-mercantil/`
+
+---
 
 ### Opción B — Sin Git: descarga el ZIP
 
@@ -36,7 +87,7 @@ Abre IBM Bob → **Archivo → Abrir carpeta** → selecciona la carpeta `guia-b
 
 | Tiempo | Módulo | Descripción |
 |--------|--------|-------------|
-| 10 min | [Fundamentos](./FUNDAMENTOS.md) | Modos, interfaz y primeros prompts |
+| 15 min | [Fundamentos](./FUNDAMENTOS.md) | Modos, interfaz y primeros prompts |
 | 10 min | [Caso 1 — Ask Mode](./casos/basicos/caso-01-ask-logica-financiera.md) | Entender lógica financiera sin tocar código |
 | 10 min | [Caso 2 — Agent Mode](./casos/basicos/caso-02-agent-bug-bigdecimal.md) | Detectar y corregir bug de precisión monetaria |
 | 10 min | [Caso 3 — Agent Mode](./casos/basicos/caso-03-agent-pruebas-junit.md) | Generar pruebas JUnit/Mockito bancarias |
@@ -45,7 +96,7 @@ Abre IBM Bob → **Archivo → Abrir carpeta** → selecciona la carpeta `guia-b
 | 20 min | [Caso 6 — Premium Java](./casos/premium/caso-06-premium-java-upgrade.md) | Migración Java 8/11 → 17/21 asistida |
 | 25 min | [Caso Extra — Dashboard Web 🚀](./casos/extra/caso-07-web-dashboard.md) | Dashboard HTML operativo bancario (opcional) |
 
-**Tiempo total estimado: ~90 min · con caso extra: ~115 min**
+**Tiempo total estimado: ~95 min · con caso extra: ~120 min**
 
 ---
 
