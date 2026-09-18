@@ -9,22 +9,42 @@ layout: default
 ## Documento Consolidado · Versión para PDF
 
 > **Audiencia:** Desarrolladores Java del Core Bancario
-> **Prerequisito:** Acceso a IBM Bob instalado en VS Code o IntelliJ
+> **Prerequisito:** Acceso a IBM Bob
 > **Tiempo total estimado:** 90 minutos
 
 ---
 
-# Parte 1 — Fundamentos
+# Parte 1 — Fundamentos de IBM Bob
 
-## Los Tres Modos
+## ¿Qué es IBM Bob?
 
-| Modo | Modifica archivos | Usa cuando... |
-|---|---|---|
-| 🔵 Ask | No | Quieres entender sin riesgo |
-| 🟡 Plan | No | Quieres diseñar antes de codificar |
-| 🔴 Agent | Sí | Quieres que Bob actúe |
+IBM Bob es un **agente de IA para desarrolladores** integrado directamente en el entorno de trabajo:
 
-## Estructura de un buen prompt
+- **Razona sobre el proyecto completo**: todas las clases, dependencias e historial de la sesión.
+- **Conversa en lenguaje natural**: describe el problema y Bob responde con análisis, propuestas o cambios.
+- **Actúa de forma autónoma**: lee, crea, edita y navega múltiples archivos en un solo flujo.
+- **Mantiene memoria de sesión**: recuerda el contexto de lo discutido durante la misma sesión.
+- **Tres modos distintos**: Ask (análisis sin cambios), Plan (diseño previo), Agent (ejecución directa).
+
+---
+
+## Los Tres Modos de Bob
+
+### 🔵 Modo Ask — "Explícame sin tocar nada"
+
+Úsalo cuando quieres **entender** algo: lógica heredada, algoritmos de cálculo, procesos sin documentar. **Bob no modifica ningún archivo.**
+
+### 🟡 Modo Plan — "Diseñemos antes de escribir"
+
+Úsalo para generar una **propuesta de arquitectura o plan de implementación** antes de generar código.
+
+### 🔴 Modo Agent — "Hazlo tú, yo reviso"
+
+El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** del proyecto de forma autónoma.
+
+> ⚠️ **Consejo Senior:** Empieza en Ask o Plan. Siempre revisa el diff antes de aceptar cambios en archivos críticos.
+
+## Estructura de un buen prompt bancario
 
 ```
 [ROL]         Actúa como desarrollador Java senior bancario
@@ -33,6 +53,15 @@ layout: default
 [RESTRICCIÓN] No cambies [límites importantes].
 [FORMATO]     Devuelve [formato de respuesta deseado].
 ```
+
+| Quiero... | Modo |
+|---|---|
+| Entender código que no escribí | Ask |
+| Revisar si una lógica es correcta | Ask |
+| Planificar un nuevo servicio | Plan |
+| Corregir un bug específico | Agent |
+| Generar pruebas para una clase | Agent |
+| Implementar lo que planeé | Plan → Agent |
 
 ---
 
@@ -114,9 +143,9 @@ Paquete base: com.bancomercantil.movimientos
 
 **Diagnóstico:**
 ```
-Analiza ConciliacionBatchService.java para 500,000 registros.
-Identifica problemas de rendimiento técnicamente.
-No modifiques nada.
+Analiza ConciliacionBatchService.java con criterio de rendimiento Java.
+Para 500,000 registros: identifica problemas técnicamente, estima impacto,
+indica cuál tiene mayor impacto. No modifiques nada.
 ```
 
 **Refactorización:**
@@ -127,7 +156,7 @@ StringBuilder en generarReporteTexto(). Agrega comentarios.
 
 **Validación obligatoria:**
 ```
-Verifica resultados idénticos para los 4 escenarios:
+Verifica que el resultado es idéntico para los 4 escenarios:
 same monto, diferente monto, solo en core, solo en externo.
 ```
 
@@ -141,7 +170,7 @@ same monto, diferente monto, solo en core, solo en externo.
 **Reporte:**
 ```
 Analiza PagoService.java y pom.xml.
-Migrar Java 11/Spring Boot 2.7 → Java 21/Spring Boot 3.2.
+Objetivo: migrar Java 11/Spring Boot 2.7 → Java 21/Spring Boot 3.2.
 Produce tabla: Problema | Impacto | Solución.
 ```
 
@@ -180,4 +209,4 @@ PagoResponse clase → Java Record.
 
 ---
 
-*Guía preparada para la PoC de IBM Bob · Banco Mercantil · 2025*
+*Guía preparada para la PoC de IBM Bob · Banco Mercantil · 2026*

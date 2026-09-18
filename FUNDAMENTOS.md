@@ -11,17 +11,15 @@ layout: default
 
 ---
 
-## ¿Qué es IBM Bob y en qué se diferencia del autocompletado?
+## ¿Qué es IBM Bob?
 
-La pregunta más común entre desarrolladores senior es: *"¿No es lo mismo que el autocompletado del IDE?"*. La respuesta corta es **no**.
+IBM Bob es un **agente de IA para desarrolladores** integrado directamente en el entorno de trabajo. Bob:
 
-| Característica | Autocompletado clásico | IBM Bob |
-|---|---|---|
-| **Contexto** | El archivo que tienes abierto | Todo el proyecto, archivos relacionados, historial de la sesión |
-| **Interacción** | Sugerencias de línea / bloque | Conversación de ida y vuelta con razonamiento |
-| **Acción** | Solo escribe código | Lee, escribe, navega y edita múltiples archivos |
-| **Modos** | Uno solo | Ask, Plan y Agent (con comportamientos distintos) |
-| **Memoria de sesión** | No | Sí, recuerda lo que hablaron antes en la misma sesión |
+- **Razona sobre el proyecto completo**: no solo el archivo abierto, sino todas las clases, dependencias e historial de la sesión.
+- **Conversa en lenguaje natural**: se le describe el problema y responde con análisis, propuestas o cambios concretos.
+- **Actúa de forma autónoma**: puede leer, crear, editar y navegar múltiples archivos en un solo flujo de trabajo.
+- **Mantiene memoria de sesión**: recuerda el contexto de lo que se discutió durante la misma sesión de trabajo.
+- **Tiene tres modos distintos**: Ask (análisis sin cambios), Plan (diseño previo) y Agent (ejecución directa).
 
 ---
 

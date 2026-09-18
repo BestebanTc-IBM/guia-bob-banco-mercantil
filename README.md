@@ -30,8 +30,8 @@ layout: default
 
 Esta guía está pensada para tres perfiles simultáneamente:
 
-- **El que viene de un IDE clásico** (Eclipse, IntelliJ): aprenderá a delegar tareas repetitivas.
-- **El que ya usó algún asistente de código**: entenderá por qué Bob va más allá del autocompletado y razona sobre el contexto completo del proyecto.
+- **El desarrollador que nunca usó un agente de IA**: aprenderá a delegar tareas repetitivas y explorar código sin riesgo.
+- **El que ya tiene experiencia con herramientas de IA**: descubrirá las capacidades de razonamiento multiarchivo y los modos Ask, Plan y Agent.
 - **El desarrollador senior Java/COBOL**: verá casos reales del core bancario y migración de legado.
 
 ---
