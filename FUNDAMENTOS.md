@@ -70,20 +70,19 @@ El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de 
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  IBM BOB          ⚙️  ≡  +  ...  ⬜  ✕                          │
-│                   │   │  │                                       │
-│                   │   │  └─ Nuevo chat                           │
+│  IBM BOB          ⚙️  ≡  +  ...  ⬜  ✕               61k/270k  │
+│                   │   │  │                                  ↑    │
+│                   │   │  └─ Nuevo chat          Contador tokens  │
 │                   │   └─── Historial de chats anteriores         │
 │                   └─────── Configuración del agente              │
 ├──────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  [ área de conversación / respuestas de Bob ]          61k/270k  │
-│                                                     ↑            │
-│                                              Contador de tokens  │
-│                                                                  │
-├──────────────────────────────────────────────────────────────────┤
 │  ▓▓▓▓  Tarea activa (barra azul)  ─────────────────────  1/4 ▓▓ │
 │        Muestra el paso que Bob está ejecutando en Agent Mode     │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  [ área de conversación / respuestas de Bob ]                    │
+│                                                                  │
+│                                                                  │
 ├──────────────────────────────────────────────────────────────────┤
 │  📋 N archivos modificados    [Deshacer todos]  [Mostrar todos]  │
 │     Aparece cuando Bob hizo cambios en Modo Agent                │
