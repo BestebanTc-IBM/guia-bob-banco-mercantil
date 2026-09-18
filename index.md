@@ -9,6 +9,29 @@ layout: default
 
 ---
 
+## 📥 Obtén el Código Antes de Empezar
+
+Todos los casos de uso tienen archivos Java listos para abrir en IBM Bob. Elige la opción que mejor se adapte a ti:
+
+### Opción A — Con Git (si ya lo tienes instalado)
+
+```bash
+git clone https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil.git
+```
+
+Abre IBM Bob → **Archivo → Abrir carpeta** → selecciona la carpeta `guia-bob-banco-mercantil/`
+
+### Opción B — Sin Git: descarga el ZIP
+
+1. Ve a **[github.com/BestebanTc-IBM/guia-bob-banco-mercantil](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil)**
+2. Haz clic en el botón verde **`< > Code`** → **`Download ZIP`**
+3. Extrae el ZIP en la carpeta donde guardas tus proyectos
+4. Abre IBM Bob → **Archivo → Abrir carpeta** → selecciona la carpeta extraída
+
+> 💡 Una vez abierta la carpeta, Bob tendrá acceso a todos los archivos del repositorio automáticamente. No necesitas adjuntar nada manualmente para los casos de uso.
+
+---
+
 ## Ruta de Aprendizaje Recomendada
 
 | Tiempo | Módulo | Descripción |
@@ -49,6 +72,6 @@ Abre [GUIA-CONSOLIDADA](./GUIA-CONSOLIDADA.md) para la versión imprimible con t
 
 ---
 
-> **Por dónde empezar:** Lee primero [Fundamentos](./FUNDAMENTOS.md) — 10 minutos que resolverán el 80% de las dudas iniciales.
+> **Por dónde empezar:** Lee primero [Fundamentos](./FUNDAMENTOS.md) — 15 minutos que resolverán el 80% de las dudas iniciales.
 
 *Guía preparada para la PoC de IBM Bob · Banco Mercantil · 2026*
