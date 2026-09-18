@@ -7,7 +7,7 @@ layout: default
 
 # Fundamentos de IBM Bob
 
-> Lee esto primero. Son 10 minutos que evitarán el 80% de la confusión al usar Bob por primera vez.
+> Lee esto primero. Son 15 minutos que evitarán el 80% de la confusión al usar Bob por primera vez.
 
 ---
 
@@ -66,24 +66,82 @@ El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** de 
 
 ## La Interfaz en 60 Segundos
 
+### Mapa de la ventana de Bob
+
 ```
-┌─────────────────────────────────────────────────────────┐
-│  IBM Bob — Panel Lateral                                │
-│                                                         │
-│  [Ask] [Plan] [Agent]   ← Selector de modo             │
-│  ─────────────────────────────────────────────         │
-│  📎 Archivos adjuntos   ← Arrastra archivos aquí       │
-│  ─────────────────────────────────────────────         │
-│  Historial de chat      ← Conversación completa        │
-│  ─────────────────────────────────────────────         │
-│  [ Escribe tu prompt...              ] [Enviar]         │
-└─────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│  IBM BOB          ⚙️  ≡  +  ...  ⬜  ✕                          │
+│                   │   │  │                                       │
+│                   │   │  └─ Nuevo chat                           │
+│                   │   └─── Historial de chats anteriores         │
+│                   └─────── Configuración del agente              │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  [ área de conversación / respuestas de Bob ]          61k/270k  │
+│                                                     ↑            │
+│                                              Contador de tokens  │
+│                                                                  │
+├──────────────────────────────────────────────────────────────────┤
+│  ▓▓▓▓  Tarea activa (barra azul)  ─────────────────────  1/4 ▓▓ │
+│        Muestra el paso que Bob está ejecutando en Agent Mode     │
+├──────────────────────────────────────────────────────────────────┤
+│  📋 N archivos modificados    [Deshacer todos]  [Mostrar todos]  │
+│     Aparece cuando Bob hizo cambios en Modo Agent                │
+├──────────────────────────────────────────────────────────────────┤
+│  ┌────────────────────────────────────────────────────────────┐  │
+│  │  Escribe tu mensaje...                                     │  │
+│  └────────────────────────────────────────────────────────────┘  │
+│   +   Agent ▾   🔒 Permisos ▾                        ✨   ▶     │
+│   │      │           │                               │           │
+│   │      │           │                               └─ Mejorar  │
+│   │      │           │                                  prompt   │
+│   │      │           └─ Controla qué puede hacer Bob             │
+│   │      └─────────────── Selector de modo (Ask / Plan / Agent)  │
+│   └────────────────────── Adjuntar archivos al contexto          │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-**Tres acciones clave que debes conocer:**
-1. **Adjuntar un archivo:** Arrastra el archivo al chat o usa `@nombre-del-archivo` en el prompt.
-2. **Cambiar de modo:** Haz clic en el selector de modo antes de enviar. El modo no cambia la conversación, solo el comportamiento.
-3. **Iniciar nueva sesión:** Cuando cambies de tarea, inicia un nuevo chat. El contexto acumulado puede confundir a Bob en tareas muy diferentes.
+### Los 5 controles que usarás siempre
+
+| Control | Ubicación | Para qué sirve |
+|---|---|---|
+| **`+`** (Adjuntar) | Barra inferior izquierda | Agregar archivos Java, logs, configs al contexto de Bob |
+| **`Agent ▾`** | Barra inferior centro | Cambiar entre Ask, Plan y Agent antes de enviar |
+| **`🔒 Permisos ▾`** | Barra inferior centro | Controlar qué archivos y carpetas puede tocar Bob |
+| **`✨`** (Mejorar prompt) | Barra inferior derecha | Bob reformula tu prompt para hacerlo más claro y completo — **úsalo antes de enviar prompts importantes** |
+| **`≡`** (Historial) | Barra superior | Ver y retomar conversaciones anteriores |
+
+### ✨ La estrella: tu copiloto para escribir mejores prompts
+
+El botón **✨** (icono de estrella/destellos, al lado derecho del campo de texto) es una de las funciones más útiles para quienes están empezando.
+
+**¿Qué hace?**
+Antes de enviar tu mensaje, Bob analiza lo que escribiste y lo reformula con más contexto, estructura y precisión — sin que tú tengas que conocer la técnica de prompting perfecta.
+
+**Ejemplo práctico:**
+
+Escribes:
+```
+"hay un bug en el calculo de comisiones"
+```
+
+Presionas ✨ y Bob lo transforma en algo como:
+```
+"Actúa como desarrollador Java senior. Tengo adjunto ComisionService.java.
+El método calcularComisionInterbancaria() parece estar produciendo resultados
+incorrectos. Analiza la lógica completa del método, identifica el error
+y propón la corrección con el menor impacto en los demás métodos del servicio."
+```
+
+> 💡 **Recomendación:** Escribe tu idea en lenguaje natural, presiona ✨ para que Bob la estructure, revisa que el prompt mejorado refleje tu intención, y *entonces* envíalo.
+
+### El contador de tokens
+
+En la esquina superior derecha verás algo como `61.2k / 270.0k`. Esto indica cuánto contexto lleva la sesión actual vs. el límite disponible.
+
+- **Por debajo del 50%**: sesión en buen estado, Bob tiene todo el contexto.
+- **Por encima del 80%**: considera iniciar un nuevo chat para evitar que Bob pierda el hilo de conversaciones anteriores.
+- **No es un costo directo para ti**: es la ventana de contexto del modelo, no una factura.
 
 ---
 
