@@ -88,14 +88,14 @@ Selecciona **Agent Mode** y arrastra `CuentaValidatorService.java` al chat.
 
 ### Paso 2 — Elige tu estilo de prompt
 
-Bob produce el mismo resultado con cualquiera de los dos enfoques. La diferencia es cuánto control quieres tener sobre el output:
+El prompt detallado siempre produce un resultado más preciso porque Bob tiene instrucciones exactas sobre qué cubrir. El corto es útil para explorar rápido, pero puede omitir casos borde que no están explícitos en el código.
 
 | | Prompt corto | Prompt detallado |
 |---|---|---|
-| **Cuándo usarlo** | Confías en que Bob infiere bien el dominio bancario | Quieres garantizar casos borde específicos |
-| **Control** | Bob decide los casos de prueba | Tú defines exactamente qué cubrir |
-| **Tiempo** | Más rápido de escribir | Más preciso en el primer intento |
-| **Recomendación** | Equipos que ya conocen el código | Código crítico o auditorías formales |
+| **Cuándo usarlo** | Exploración rápida o primera iteración | Código crítico, auditorías, entrega a QA |
+| **Cobertura** | Bob infiere los casos — puede haber omisiones | Tú defines los casos — cobertura garantizada |
+| **Velocidad** | Más rápido de escribir | Más tiempo de redacción, menos iteraciones |
+| **Calidad del output** | Variable según el contexto inferido | Consistente y predecible |
 
 ---
 
