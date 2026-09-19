@@ -182,6 +182,8 @@ Realiza la refactorización y validación de TransferenciaService.java:
    - Compila y ejecuta las pruebas mostrando el reporte en consola.
 ```
 
+> 🛡️ **Human in the Loop (Comandos en Terminal):** Bob solicitará autorización antes de ejecutar comandos CLI (`javac`, `java`). Revisa siempre la instrucción antes de aceptarla; eres el guardián de la seguridad en tu estación de trabajo.
+
 ### Checklist de Revisión del Diff
 - [ ] ¿Todos los `double` fueron reemplazados?
 - [ ] ¿Los constructores usan String, no literales?
