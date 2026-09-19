@@ -1,4 +1,4 @@
-// ConciliacionBatchService.java — VERSIÓN LENTA (código de partida para Caso 5)
+// ConciliacionBatchService.java — código de partida para el Caso 5
 package com.bancomercantil.batch.conciliacion;
 
 import java.math.BigDecimal;
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Proceso de conciliación nocturna de transacciones.
- * ADVERTENCIA: Esta versión tiene problemas de rendimiento intencionalmente
- * para el ejercicio del Caso 5 de la guía de IBM Bob.
+ * Servicio de conciliación nocturna de transacciones.
+ * Compara los registros del sistema Core bancario contra los reportados
+ * por corresponsales bancarios y la red interbancaria (SICAM).
  */
 public class ConciliacionBatchService {
 
@@ -24,7 +24,9 @@ public class ConciliacionBatchService {
                 if (tc.getReferencia().equals(te.getReferencia())) {
                     ResultadoConciliacion resultado = new ResultadoConciliacion();
                     resultado.setReferencia(tc.getReferencia());
-                    resultado.setMontoDiferencia(tc.getMonto().subtract(te.getMonto()).abs());
+                    resultado.setMontoDiferencia(
+                        tc.getMonto().subtract(te.getMonto()).abs()
+                    );
                     resultado.setEstado(
                         resultado.getMontoDiferencia().compareTo(BigDecimal.ZERO) == 0
                             ? "CONCILIADA" : "DIFERENCIA"

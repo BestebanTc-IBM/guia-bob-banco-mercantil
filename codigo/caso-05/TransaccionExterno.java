@@ -7,15 +7,14 @@ import java.time.LocalDate;
 /**
  * Representa una transacción reportada por el sistema externo (corresponsal bancario,
  * cámara de compensación SICAM, red interbancaria).
- * Archivo de soporte para el Caso 5 de la guía de IBM Bob.
  */
 public class TransaccionExterno {
 
     private String     referencia;
     private BigDecimal monto;
     private LocalDate  fecha;
-    private String     codigoBanco;    // Código del banco corresponsal
-    private String     estadoExterno;  // PROCESADA, PENDIENTE, RECHAZADA
+    private String     codigoBanco;   // Código del banco corresponsal
+    private String     estadoExterno; // PROCESADA, PENDIENTE, RECHAZADA
     private String     descripcion;
 
     public TransaccionExterno() {}

@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 /**
  * Representa una transacción registrada en el sistema Core bancario (origen interno).
- * Archivo de soporte para el Caso 5 de la guía de IBM Bob.
  */
 public class TransaccionCore {
 

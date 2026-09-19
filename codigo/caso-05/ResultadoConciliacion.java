@@ -9,18 +9,16 @@ import java.time.LocalDate;
  * y el sistema externo.
  *
  * Estados posibles:
- *   CONCILIADA              — encontrada en ambos con el mismo monto
- *   DIFERENCIA              — encontrada en ambos pero con monto distinto
- *   NO_ENCONTRADA_EXTERNO   — presente en core, ausente en externo
- *   NO_ENCONTRADA_CORE      — presente en externo, ausente en core
- *
- * Archivo de soporte para el Caso 5 de la guía de IBM Bob.
+ *   CONCILIADA            — referencia encontrada en ambos sistemas con el mismo monto
+ *   DIFERENCIA            — referencia encontrada en ambos sistemas pero con monto distinto
+ *   NO_ENCONTRADA_EXTERNO — referencia presente en core pero ausente en el externo
+ *   NO_ENCONTRADA_CORE    — referencia presente en externo pero ausente en el core
  */
 public class ResultadoConciliacion {
 
     private String     referencia;
-    private String     estado;
-    private BigDecimal montoDiferencia;
+    private String     estado;           // ver estados posibles arriba
+    private BigDecimal montoDiferencia;  // ZERO si CONCILIADA; monto de la diferencia si DIFERENCIA
     private LocalDate  fechaProcesamiento;
     private String     observaciones;
 
@@ -46,9 +44,11 @@ public class ResultadoConciliacion {
     public void setFechaProcesamiento(LocalDate fechaProcesamiento) { this.fechaProcesamiento = fechaProcesamiento; }
     public void setObservaciones(String observaciones)              { this.observaciones = observaciones; }
 
-    /** true si requiere revisión humana (cualquier estado distinto a CONCILIADA) */
+    /** Devuelve true si la conciliación detectó algún problema que requiere revisión humana. */
     public boolean requiereRevision() {
-        return !"CONCILIADA".equals(estado);
+        return "DIFERENCIA".equals(estado)
+            || "NO_ENCONTRADA_EXTERNO".equals(estado)
+            || "NO_ENCONTRADA_CORE".equals(estado);
     }
 
     @Override
