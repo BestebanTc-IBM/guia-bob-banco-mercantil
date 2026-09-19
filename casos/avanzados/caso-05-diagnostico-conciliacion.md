@@ -103,30 +103,30 @@ Cambia a **🔴 Agent** en la barra inferior.
 ### Paso 5 — Prompt de corrección multiarchivo
 
 ```
-Aplica los cambios necesarios en todos los archivos de la carpeta caso-05 para que
+Aplica los cambios necesarios en los archivos de la carpeta caso-05 para que
 el reporte de conciliación cumpla la norma regulatoria. Los cambios deben:
 
 1. En ResultadoConciliacion.java: agregar el campo estadoExterno (String) con
    su getter y setter, representando el estado reportado por el sistema corresponsal.
 
 2. En ConciliacionBatchService.conciliarTransacciones():
-   - Asignar fechaProcesamiento = LocalDate.now() en cada ResultadoConciliacion creado.
-   - Copiar el estadoExterno de TransaccionExterno al ResultadoConciliacion cuando
-     la referencia se encuentra en el externo.
-   - En los casos NO_ENCONTRADA_EXTERNO, dejar estadoExterno como "SIN_REGISTRO_EXTERNO".
-   - En los casos NO_ENCONTRADA_CORE, copiar el estadoExterno del registro externo.
+   - Asignar fechaProcesamiento = LocalDate.now() en los tres bloques que construyen
+     un ResultadoConciliacion (caso CONCILIADA/DIFERENCIA, NO_ENCONTRADA_EXTERNO,
+     NO_ENCONTRADA_CORE).
+   - Copiar te.getEstadoExterno() al ResultadoConciliacion SOLO en el bloque donde
+     la referencia coincide en ambos sistemas. En los casos NO_ENCONTRADA_EXTERNO y
+     NO_ENCONTRADA_CORE no hay contraparte externa con estado válido; dejar null.
 
 3. En ConciliacionBatchService.generarReporteTexto():
-   - Agregar fechaProcesamiento a cada línea del reporte.
-   - Agregar una columna REQUIERE_REVISION con el resultado de requiereRevision().
-   - Agregar estadoExterno a cada línea.
-   - Usar StringBuilder en lugar de concatenación de String.
+   - Agregar fechaProcesamiento a cada línea.
+   - Agregar el resultado de requiereRevision() como REVISION:SI o REVISION:NO.
+   - Agregar estadoExterno; si es null mostrar N/A.
 
 No cambies TransaccionCore.java ni TransaccionExterno.java.
 Mantén los mismos nombres de métodos públicos en todos los archivos.
 ```
 
-**¿Qué hace Bob en este paso?**  
+**¿Qué hace Bob en este paso?**
 Bob va a abrir y modificar `ResultadoConciliacion.java` y `ConciliacionBatchService.java` en la misma operación. En el panel de archivos modificados verás **2 archivos** tocados simultáneamente — eso es lo diferente respecto a los casos anteriores donde siempre era 1.
 
 ---
@@ -134,13 +134,14 @@ Bob va a abrir y modificar `ResultadoConciliacion.java` y `ConciliacionBatchServ
 ### Paso 6 — Verificación cruzada
 
 ```
-Revisa los cambios aplicados y responde:
-¿En el caso de una transacción NO_ENCONTRADA_CORE, el estadoExterno que se
-copia al resultado corresponde al campo estadoExterno de TransaccionExterno
-o al campo descripcion? ¿Cuál es el correcto según el significado del campo?
+Revisa los cambios aplicados en conciliarTransacciones() y dime:
+Para una transacción NO_ENCONTRADA_CORE, ¿estadoExterno en el resultado
+queda null o tiene algún valor asignado? ¿Es correcto ese comportamiento
+considerando lo que significa ese campo y lo que hay disponible en
+TransaccionExterno para ese caso?
 ```
 
-> 🔍 **Por qué este prompt**: Obliga a Bob a releer `TransaccionExterno` y confirmar que usó el campo correcto (`estadoExterno`: PROCESADA/PENDIENTE/RECHAZADA) y no el campo `descripcion` (texto libre). Es una validación de semántica, no de sintaxis.
+> 🔍 **Por qué este prompt**: En la prueba real Bob deja `estadoExterno = null` en los casos sin contraparte, y muestra `N/A` en el reporte — lo cual es semánticamente correcto (no hay estado externo que reportar). Este prompt confirma que Bob razonó sobre el *significado* del campo y no simplemente llenó con un valor genérico. También obliga a releer `TransaccionExterno` para verificar qué campos existen realmente.
 
 ---
 
@@ -149,12 +150,11 @@ o al campo descripcion? ¿Cuál es el correcto según el significado del campo?
 Al finalizar el caso, los cambios deben cumplir:
 
 - [ ] `ResultadoConciliacion.java` tiene el campo `estadoExterno` con getter y setter
-- [ ] `conciliarTransacciones()` asigna `fechaProcesamiento` en **todos** los casos (CONCILIADA, DIFERENCIA, NO\_ENCONTRADA\_EXTERNO, NO\_ENCONTRADA\_CORE)
-- [ ] `conciliarTransacciones()` copia `estadoExterno` desde `TransaccionExterno` cuando el registro externo existe
-- [ ] `generarReporteTexto()` imprime: referencia | fecha | estado | estadoExterno | diferencia | requiereRevision
-- [ ] `generarReporteTexto()` usa `StringBuilder`
+- [ ] `conciliarTransacciones()` asigna `fechaProcesamiento` en los **3 bloques** (CONCILIADA/DIFERENCIA, NO\_ENCONTRADA\_EXTERNO, NO\_ENCONTRADA\_CORE)
+- [ ] `conciliarTransacciones()` copia `te.getEstadoExterno()` al resultado **solo** en el bloque de coincidencia; en los demás casos `estadoExterno` queda `null`
+- [ ] `generarReporteTexto()` imprime por línea: referencia | fecha | REVISION:SI/NO | estado | diferencia | ESTADO\_EXTERNO (o N/A)
 - [ ] `TransaccionCore.java` y `TransaccionExterno.java` **no fueron modificados**
-- [ ] El panel de archivos modificados de Bob muestra exactamente 2 archivos tocados
+- [ ] El panel de archivos modificados de Bob muestra exactamente **2 archivos** tocados
 
 ---
 
