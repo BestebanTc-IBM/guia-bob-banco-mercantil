@@ -86,45 +86,24 @@ Selecciona **Agent Mode** y arrastra `CuentaValidatorService.java` al chat.
 
 ---
 
-### Paso 2 — Prompt único: genera pruebas y documentación en paralelo
+### Paso 2 — Un solo prompt, dos archivos
+
+> 💡 Este es el punto central del caso: observa lo poco que se le pide a Bob vs. lo mucho que produce.
 
 ```
-Actúa como desarrollador Java senior y analista de calidad bancario.
-Tengo adjunto CuentaValidatorService.java.
+Tengo adjunto CuentaValidatorService.java. Es un servicio de validación bancaria.
 
-Genera DOS archivos en paralelo:
+Genera dos archivos y guárdalos en codigo/caso-03/:
 
---- ARCHIVO 1: CuentaValidatorServiceTest.java ---
-Pruebas JUnit 5 para los tres métodos del servicio.
-Reglas:
-- Paquete: com.bancomercantil.core.cuentas
-- Usa @Test y @DisplayName con descripciones en español que el coordinador
-  de QA pueda leer en una reunión sin ver el código.
-  Formato: "Debe [resultado] cuando [condición]"
-- Usa @ParameterizedTest + @ValueSource para esNumeroCuentaValido()
-- Incluye estos casos mínimos para puedeDebitar():
-    • Cuenta BLOQUEADA → false
-    • Cuenta INACTIVA → false
-    • Saldo suficiente, cuenta ACTIVA → true
-    • Monto que deja saldo exactamente en -5000.00 → true (límite exacto, no lo supera)
-    • Monto que deja saldo en -5000.01 → false (supera el límite)
-    • Acumulado diario que al sumar el monto supera 100000.00 → false
-    • montoDebito nulo → false
-    • montoDebito en cero → false
-- Incluye comentario inline // CRITERIO DE NEGOCIO: en cada test que lo amerite
+1. CuentaValidatorServiceTest.java — pruebas JUnit 5 completas, @DisplayName en español
+   legible para QA, @ParameterizedTest para validaciones de número de cuenta,
+   comentarios "// CRITERIO DE NEGOCIO:" en los casos críticos.
 
---- ARCHIVO 2: CRITERIOS-VALIDACION-CUENTAS.md ---
-Documento de criterios de aceptación en Markdown para el coordinador de QA.
-Estructura:
-# Criterios de Aceptación — Validación de Cuentas
-## Resumen
-## Tabla de Criterios (columnas: ID | Método | Condición | Resultado Esperado | Estado)
-## Casos Borde Críticos (descripción en lenguaje de negocio, sin código)
-## Reglas de Negocio Implícitas (límites, umbrales, estados válidos)
-## Versión y Cobertura (fecha, versión del servicio, N tests generados)
-
-Guarda ambos archivos en la carpeta codigo/caso-03/ del proyecto.
+2. CRITERIOS-VALIDACION-CUENTAS.md — documento para el coordinador de QA con tabla
+   de criterios, casos borde en lenguaje de negocio (sin código) y reglas implícitas.
 ```
+
+**Eso es todo.** Bob leerá el código, inferirá los casos borde bancarios (sobregiro, límite diario, estados de cuenta) y producirá ambos archivos sin que tengas que explicarle la lógica.
 
 ---
 
