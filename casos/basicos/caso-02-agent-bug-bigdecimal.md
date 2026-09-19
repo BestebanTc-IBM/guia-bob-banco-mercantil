@@ -13,23 +13,25 @@ layout: default
 
 ## Contexto del Caso
 
-Reporte de QA: **algunas transferencias muestran diferencias de centavos en el balance del cliente**. El `TransferenciaService.java` usa `double` para los cálculos monetarios.
+El equipo recibió un reporte: **algunas transferencias muestran diferencias de centavos en el balance del cliente**. Tras revisar los logs, sospechan que el servicio `TransferenciaService.java` usa `double` para los cálculos monetarios, lo cual en Java genera errores de punto flotante. Un bug clásico pero con impacto real en el core bancario.
 
-**Objetivo:** Localizar y corregir todos los cálculos con `double` y migrarlos a `BigDecimal`.
+**Objetivo:** Usar Bob en modo Agent para localizar y corregir todos los cálculos con `double` y migrarlos a `BigDecimal` de forma segura.
 
 ---
 
 ## El Problema: ¿Por qué `double` es un Bug en Bancos?
 
 ```java
-// Parece correcto pero NO lo es:
+// Esto parece correcto pero NO lo es:
 double saldo = 100.10;
-System.out.println(saldo - 0.20);
+double debito = 0.20;
+System.out.println(saldo - debito);
 // Resultado: 99.89999999999999  ← ¡Error de centavos!
 
 // Correcto con BigDecimal:
 BigDecimal saldo = new BigDecimal("100.10");
-System.out.println(saldo.subtract(new BigDecimal("0.20")));
+BigDecimal debito = new BigDecimal("0.20");
+System.out.println(saldo.subtract(debito));
 // Resultado: 99.90  ✓
 ```
 
@@ -37,16 +39,60 @@ System.out.println(saldo.subtract(new BigDecimal("0.20")));
 
 ## Código de Partida
 
-Descarga [`TransferenciaService.java`](https://github.com/BestebanTc-IBM/guia-bob-banco-mercantil/blob/main/codigo/caso-02/TransferenciaService.java) del repositorio.
+Abre [`../../codigo/caso-02/TransferenciaService.java`](../../codigo/caso-02/TransferenciaService.java).
+
+```java
+// TransferenciaService.java  — VERSIÓN CON BUG
+package com.bancomercantil.core.transferencias;
+
+public class TransferenciaService {
+
+    public double calcularMontoFinal(double monto, double comision) {
+        return monto + comision;
+    }
+
+    public double aplicarImpuesto(double monto, double tasaImpuesto) {
+        return monto * (1 + tasaImpuesto);
+    }
+
+    public double calcularSaldoResultante(double saldoActual, double montoDebito, double montoCredito) {
+        double resultado = saldoActual - montoDebito + montoCredito;
+        // Redondeo manual con doble, que NO garantiza exactitud
+        return Math.round(resultado * 100.0) / 100.0;
+    }
+
+    public boolean tieneFondosSuficientes(double saldo, double montoSolicitado) {
+        return saldo >= montoSolicitado;
+    }
+
+    public double calcularComisionConDescuento(double monto, double comisionBase, double descuento) {
+        double comisionFinal = comisionBase - (comisionBase * descuento);
+        return monto + comisionFinal;
+    }
+}
+```
 
 ---
 
 ## Paso a Paso con Bob
 
-### Paso 1 — Modo 🔴 Agent
+### Paso 1 — Cambia al modo Agent
+
+En el panel de Bob, selecciona el modo **🔴 Agent**.
+
 > ⚠️ En este modo Bob SÍ puede editar archivos. Revisa siempre el diff antes de aceptar.
 
-### Paso 2 — Prompt de diagnóstico (buena práctica: primero confirmar)
+---
+
+### Paso 2 — Adjunta el archivo
+
+Arrastra `TransferenciaService.java` al chat.
+
+---
+
+### Paso 3 — Prompt de diagnóstico primero (buena práctica)
+
+Antes de pedir cambios, confirma el problema:
 
 ```
 Tengo adjunto TransferenciaService.java.
@@ -56,33 +102,74 @@ representa un riesgo en un sistema bancario.
 No modifiques ningún archivo todavía.
 ```
 
-### Paso 3 — Prompt de corrección
+Espera la respuesta. Bob debería identificar los 5 métodos con `double`.
+
+---
+
+### Paso 4 — Prompt de corrección y verificación
+
+Una vez confirmado el diagnóstico, da la instrucción de modificación y validación en un solo paso:
 
 ```
-Ahora realiza la refactorización:
-1. Reemplaza todos los parámetros y variables de tipo double por BigDecimal.
-2. Usa BigDecimal con constructores de String (new BigDecimal("valor")),
-   nunca con literales double.
-3. Usa RoundingMode.HALF_UP con escala de 2 para todos los setScale().
-4. En tieneFondosSuficientes(), usa compareTo() en lugar de >= .
-5. Mantén los mismos nombres de métodos y la misma lógica de negocio.
-6. Agrega los imports necesarios.
+Realiza la refactorización y validación de TransferenciaService.java:
+
+1. Migración a BigDecimal:
+   - Reemplaza todos los tipos 'double' por 'BigDecimal'.
+   - Usa siempre constructores de String (ej. new BigDecimal("100.10")), nunca literales double.
+   - Aplica .setScale(2, RoundingMode.HALF_UP) a los cálculos monetarios.
+   - En tieneFondosSuficientes(), usa compareTo() en lugar de >=.
+   - Conserva los nombres de métodos, firmas lógicas y reglas de negocio intactas.
+   - Agrega los imports necesarios de java.math.BigDecimal y java.math.RoundingMode.
+
+2. Pruebas y Verificación:
+   - Crea un archivo TransferenciaServiceTest.java con un método main() autónomo (sin dependencias externas de JUnit) que valide todos los métodos y casos borde (como el desfase de centavos en 100.10 - 0.20).
+   - Compila y ejecuta las pruebas mostrando el reporte en consola.
 ```
 
-### Paso 4 — Revisa el diff antes de aceptar
+---
+
+### Paso 5 — Revisa el diff antes de aceptar
+
+Bob mostrará los cambios propuestos. Verifica:
 
 - [ ] ¿Todos los `double` fueron reemplazados?
 - [ ] ¿Los constructores usan String, no literales?
-- [ ] ¿`tieneFondosSuficientes` usa `compareTo()`?
+- [ ] ¿El método `tieneFondosSuficientes` usa `compareTo()`?
 - [ ] ¿Los imports están agregados?
+
+Si algo no está bien, dile a Bob exactamente qué corregir antes de aceptar.
+
+---
+
+### Paso 6 — Verifica el resultado
+
+```java
+// Así debería quedar tieneFondosSuficientes:
+public boolean tieneFondosSuficientes(BigDecimal saldo, BigDecimal montoSolicitado) {
+    return saldo.compareTo(montoSolicitado) >= 0;
+}
+```
+
+---
+
+## ✅ Resultado Esperado
+
+El archivo `TransferenciaService.java` refactorizado debería:
+
+- [ ] No contener ninguna ocurrencia de `double` en parámetros o variables de negocio
+- [ ] Usar `BigDecimal` con escala explícita en todos los cálculos
+- [ ] Compilar sin errores
+- [ ] Mantener la misma firma lógica de cada método
+- [ ] Pasar el 100% de las pruebas unitarias generadas en `TransferenciaServiceTest.java`
 
 ---
 
 ## 💡 Lo Que Aprendiste
 
-1. **El patrón diagnóstico → corrección**: Primero confirmar, luego actuar.
-2. **El diff es tu red de seguridad**: Nunca aceptes cambios sin leerlo completo.
-3. **Prompts con restricciones explícitas** evitan que Bob reproduzca el mismo error.
+1. **Agent Mode edita y ejecuta**: A diferencia de Ask, aquí Bob puede modificar código y ejecutar verificaciones.
+2. **El patrón diagnóstico → corrección**: Primero confirmar, luego actuar. Esto aplica a cualquier cambio crítico.
+3. **El diff es tu red de seguridad**: Revisa siempre los cambios propuestos antes de aceptarlos.
+4. **Verificación autónoma en el prompt**: Solicitar tests con `main()` permite validar los cambios inmediatamente sin fricción de dependencias o frameworks externos.
 
 ---
 
