@@ -126,6 +126,14 @@ Realiza la refactorización y validación de TransferenciaService.java:
    - Compila y ejecuta las pruebas mostrando el reporte en consola.
 ```
 
+> 🛡️ **Seguridad y Control — "Human in the Loop" (Humano en el Medio):**
+> 
+> En este paso, Bob te solicitará autorización para **ejecutar comandos de terminal** (compilación con `javac` y ejecución con `java`).
+> 
+> - **Revisión obligatoria:** Antes de presionar *Aceptar*, inspecciona detenidamente el comando sugerido en pantalla.
+> - **Entorno local:** Estos comandos se ejecutan directamente sobre tu estación de trabajo (a menos que las políticas de seguridad de tu máquina o permisos de usuario restrinjan la consola).
+> - **Criterio técnico:** Si el comando es seguro y coherente con la tarea, apruébalo; de lo contrario, recházalo o pide un ajuste en el chat. Recuerda: **la IA propone, pero tú como desarrollador mantienes el control total de la ejecución.**
+
 ---
 
 ### Paso 5 — Revisa el diff antes de aceptar
