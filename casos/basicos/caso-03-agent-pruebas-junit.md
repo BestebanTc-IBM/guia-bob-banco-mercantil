@@ -86,9 +86,20 @@ Selecciona **Agent Mode** y arrastra `CuentaValidatorService.java` al chat.
 
 ---
 
-### Paso 2 — Un solo prompt, dos archivos
+### Paso 2 — Elige tu estilo de prompt
 
-> 💡 Este es el punto central del caso: observa lo poco que se le pide a Bob vs. lo mucho que produce.
+Bob produce el mismo resultado con cualquiera de los dos enfoques. La diferencia es cuánto control quieres tener sobre el output:
+
+| | Prompt corto | Prompt detallado |
+|---|---|---|
+| **Cuándo usarlo** | Confías en que Bob infiere bien el dominio bancario | Quieres garantizar casos borde específicos |
+| **Control** | Bob decide los casos de prueba | Tú defines exactamente qué cubrir |
+| **Tiempo** | Más rápido de escribir | Más preciso en el primer intento |
+| **Recomendación** | Equipos que ya conocen el código | Código crítico o auditorías formales |
+
+---
+
+#### Opción 1 — Prompt corto (Bob infiere el dominio)
 
 ```
 Tengo adjunto CuentaValidatorService.java. Es un servicio de validación bancaria.
@@ -103,7 +114,41 @@ Genera dos archivos y guárdalos en codigo/caso-03/:
    de criterios, casos borde en lenguaje de negocio (sin código) y reglas implícitas.
 ```
 
-**Eso es todo.** Bob leerá el código, inferirá los casos borde bancarios (sobregiro, límite diario, estados de cuenta) y producirá ambos archivos sin que tengas que explicarle la lógica.
+---
+
+#### Opción 2 — Prompt detallado (tú defines los casos)
+
+```
+Actúa como desarrollador Java senior y analista de calidad bancario.
+Tengo adjunto CuentaValidatorService.java.
+
+Genera DOS archivos en paralelo y guárdalos en codigo/caso-03/:
+
+--- ARCHIVO 1: CuentaValidatorServiceTest.java ---
+Pruebas JUnit 5 para los tres métodos del servicio.
+- Paquete: com.bancomercantil.core.cuentas
+- @DisplayName en español, formato: "Debe [resultado] cuando [condición]"
+- @ParameterizedTest + @ValueSource para esNumeroCuentaValido()
+- Casos obligatorios para puedeDebitar():
+    • Cuenta BLOQUEADA → false
+    • Cuenta INACTIVA → false
+    • Saldo suficiente, cuenta ACTIVA → true
+    • Monto que deja saldo exactamente en -5000.00 → true
+    • Monto que deja saldo en -5000.01 → false
+    • Acumulado diario que supera 100000.00 → false
+    • montoDebito nulo → false
+    • montoDebito en cero → false
+- Comentario inline // CRITERIO DE NEGOCIO: en cada test que lo amerite
+
+--- ARCHIVO 2: CRITERIOS-VALIDACION-CUENTAS.md ---
+Documento de criterios de aceptación para el coordinador de QA.
+Secciones:
+- Resumen ejecutivo
+- Tabla: ID | Método | Condición | Resultado Esperado | Estado
+- Casos Borde Críticos en lenguaje de negocio (sin código Java)
+- Reglas de Negocio Implícitas (límites, umbrales, estados válidos)
+- Versión y Cobertura (fecha, N tests generados)
+```
 
 ---
 
