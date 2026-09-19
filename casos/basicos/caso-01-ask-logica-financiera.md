@@ -137,25 +137,39 @@ Bob debería responder con algo similar a:
 
 ---
 
-### Paso 4 — Segundo prompt: Profundidad en la lógica
+### Paso 4 — Segundo prompt: Diagrama de flujo
 
 ```
-Ahora explícame con un ejemplo numérico concreto:
-- Una transferencia de $75,000 de una cuenta CORRIENTE de cliente estándar.
-- Una transferencia de $75,000 de un cliente PREMIUM.
-- Una transferencia de $100 de cualquier cliente.
-Muestra el cálculo paso a paso para cada caso.
+Genera un diagrama de flujo del método calcularComision() usando un bloque
+mermaid con sintaxis flowchart TD.
+
+Reglas para que el diagrama no falle en el parser de Mermaid:
+- No uses || ni && dentro de los nodos; escríbelos como texto: "es null o menor que cero", "y".
+- No uses < > = en etiquetas de nodos; escríbelos como palabras: "mayor que", "menor que".
+- No uses comas en números (50000 no 50,000).
+- Nodos rectangulares entre [ ], decisiones entre { }.
+- Etiquetas de aristas solo con Sí / No o texto simple.
 ```
+
+> ⚠️ **Nota para el lector:** No le pidas a Bob que calcule comisiones numéricas paso a paso. Los LLMs pueden dar resultados incorrectos con total confianza en aritmética decimal. Para verificar valores concretos, ejecuta el código directamente en Java o en una consola Python.
 
 ---
 
 ### Paso 5 — Tercer prompt: Auditoría de casos borde
 
 ```
-Actuando como un auditor de software bancario:
-¿Qué escenarios de entrada podrían causar un comportamiento inesperado
-en este código? Considera: valores nulos, tipos de cuenta no listados,
-montos negativos, montos exactamente iguales al umbral de $50,000.
+Actúa como auditor de software bancario.
+
+Analiza solo el flujo lógico del código — sin hacer cálculos numéricos.
+
+Para cada escenario indica qué rama se ejecuta y si hay riesgo:
+  1. monto = null
+  2. monto = 0.00 o negativo
+  3. tipoCuenta = null o "EMPRESARIAL" o "corriente" (minúsculas)
+  4. monto = 50000.00 exactamente vs 50000.01 en cuenta CORRIENTE
+  5. esClientePremium = true con tipoCuenta = null
+
+Devuelve una tabla: Escenario | Rama ejecutada | Riesgo (Alto/Medio/Bajo)
 ```
 
 ---
