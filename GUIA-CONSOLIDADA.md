@@ -42,9 +42,11 @@ IBM Bob es un **agente de IA para desarrolladores** integrado directamente en el
 
 El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** del proyecto de forma autónoma.
 
-> ⚠️ **Consejo Senior:** Empieza en Ask o Plan. Siempre revisa el diff antes de aceptar cambios en archivos críticos.
+> ⚠️ **Consejo Senior:** Empieza en Ask o Plan para entender el contexto. Cambia a Agent solo cuando sabes exactamente qué quieres. Siempre revisa el diff antes de aceptar cambios en archivos críticos.
 
-## Estructura de un buen prompt bancario
+## Buenas Prácticas de Prompts
+
+### Estructura de un buen prompt bancario
 
 ```
 [ROL]         Actúa como desarrollador Java senior bancario
@@ -54,61 +56,168 @@ El modo más poderoso. Bob puede **leer, crear, editar y eliminar archivos** del
 [FORMATO]     Devuelve [formato de respuesta deseado].
 ```
 
+### Tabla rápida de decisión de modo
+
 | Quiero... | Modo |
 |---|---|
 | Entender código que no escribí | Ask |
 | Revisar si una lógica es correcta | Ask |
 | Planificar un nuevo servicio | Plan |
+| Proponer arquitectura para revisión | Plan |
 | Corregir un bug específico | Agent |
 | Generar pruebas para una clase | Agent |
 | Implementar lo que planeé | Plan → Agent |
 
 ---
 
-# Parte 2 — Casos Básicos
+# Parte 2 — Casos de Uso Básicos
+
+---
 
 ## Caso 1 · Ask Mode: Comprensión de Lógica Financiera
-**Modo:** 🔵 Ask | **Tiempo:** 10 min
 
-**Prompt 1:** `Tengo adjunto ComisionService.java. Explícame: qué hace este servicio en términos bancarios, cuáles son los flujos principales, qué reglas de negocio están implementadas y qué casos borde podrían no estar cubiertos.`
+**Modo:** 🔵 Ask | **Tiempo:** 10 min | **Nivel:** Básico
 
-**Prompt 2:** `Con ejemplos concretos, calcúlame la comisión para: $75,000 cuenta CORRIENTE estándar, $75,000 cliente PREMIUM, $100 cualquier cliente. Muestra el cálculo paso a paso.`
+### Contexto
 
-**Prompt 3:** `Como auditor de software bancario, ¿qué entradas podrían causar comportamiento inesperado? Considera: nulos, tipos de cuenta no listados, umbral exacto de $50,000.`
+Eres nuevo en el equipo de Core Bancario. Te asignan revisar el módulo de cálculo de comisiones interbancarias sin documentación, sin comentarios, 200 líneas.
+
+### Código de Partida
+
+```java
+// ComisionService.java
+public class ComisionService {
+    private static final BigDecimal TASA_INTERBANCARIA_BASE = new BigDecimal("0.0035");
+    private static final BigDecimal TASA_PREMIUM            = new BigDecimal("0.0020");
+    private static final BigDecimal UMBRAL_MONTO_ALTO       = new BigDecimal("50000.00");
+    private static final BigDecimal COMISION_MINIMA         = new BigDecimal("2.50");
+    private static final BigDecimal COMISION_MAXIMA         = new BigDecimal("500.00");
+
+    public BigDecimal calcularComision(BigDecimal monto, String tipoCuenta, boolean esClientePremium) {
+        if (monto == null || monto.compareTo(BigDecimal.ZERO) <= 0)
+            throw new IllegalArgumentException("El monto debe ser mayor que cero");
+        BigDecimal tasa = resolverTasa(monto, tipoCuenta, esClientePremium);
+        BigDecimal comision = monto.multiply(tasa).setScale(2, RoundingMode.HALF_UP);
+        return aplicarLimites(comision);
+    }
+    // ... ver archivo completo en codigo/caso-01/
+}
+```
+
+### Prompts para usar con Bob
+
+**Prompt 1 — Visión general:**
+```
+Tengo adjunto ComisionService.java.
+Explícame: qué hace este servicio en términos bancarios, cuáles son los flujos
+principales, qué reglas de negocio están implementadas y qué casos borde
+podrían no estar cubiertos.
+```
+
+**Prompt 2 — Ejemplos numéricos:**
+```
+Con ejemplos concretos, calcúlame la comisión para:
+- $75,000 cuenta CORRIENTE cliente estándar
+- $75,000 cliente PREMIUM
+- $100 cualquier cliente
+Muestra el cálculo paso a paso.
+```
+
+**Prompt 3 — Auditoría:**
+```
+Como auditor de software bancario, ¿qué entradas podrían causar comportamiento
+unexpected? Considera: nulos, tipos de cuenta no listados, umbral exacto de $50,000.
+```
+
+### Lo Que Aprendiste
+- Ask Mode es seguro: no modifica archivos.
+- Bob entiende dominio bancario: no necesitas explicarle conceptos del sector.
+- Los prompts en cadena son más poderosos que uno solo largo.
 
 ---
 
-## Caso 2 · Agent Mode: Corrección de Bug BigDecimal
-**Modo:** 🔴 Agent | **Tiempo:** 10 min
+## Caso 2 · Agent Mode: Corrección de Bug de Precisión Monetaria
 
-**Diagnóstico primero:**
+**Modo:** 🔴 Agent | **Tiempo:** 10 min | **Nivel:** Básico
+
+### Contexto
+
+Reporte de QA: diferencias de centavos en el balance de clientes. El `TransferenciaService.java` usa `double` para cálculos monetarios.
+
+### Por Qué `double` es un Bug Bancario
+
+```java
+// Parece correcto pero NO lo es:
+double saldo = 100.10;
+System.out.println(saldo - 0.20);
+// → 99.89999999999999  ← ¡Error de centavos!
+
+// Correcto:
+BigDecimal saldo = new BigDecimal("100.10");
+System.out.println(saldo.subtract(new BigDecimal("0.20")));
+// → 99.90  ✓
+```
+
+### Prompt de Diagnóstico (primero)
 ```
 Identifica todos los lugares donde se usa double para cálculos monetarios
-en TransferenciaService.java. No modifiques nada todavía.
+en TransferenciaService.java. Explica brevemente por qué cada uno
+representa un riesgo bancario. No modifiques ningún archivo todavía.
 ```
 
-**Corrección:**
+### Prompt de Corrección y Verificación (después de confirmar)
 ```
-Refactoriza: reemplaza double por BigDecimal, usa constructores de String,
-RoundingMode.HALF_UP escala 2, compareTo() en tieneFondosSuficientes().
+Realiza la refactorización y validación de TransferenciaService.java:
+
+1. Migración a BigDecimal:
+   - Reemplaza todos los tipos 'double' por 'BigDecimal'.
+   - Usa siempre constructores de String (ej. new BigDecimal("100.10")), nunca literales double.
+   - Aplica .setScale(2, RoundingMode.HALF_UP) a los cálculos monetarios.
+   - En tieneFondosSuficientes(), usa compareTo() en lugar de >=.
+   - Conserva los nombres de métodos, firmas lógicas y reglas de negocio intactas.
+   - Agrega los imports necesarios de java.math.BigDecimal y java.math.RoundingMode.
+
+2. Pruebas y Verificación:
+   - Crea un archivo TransferenciaServiceTest.java con un método main() autónomo (sin dependencias externas de JUnit) que valide todos los métodos y casos borde (como el desfase de centavos en 100.10 - 0.20).
+   - Compila y ejecuta las pruebas mostrando el reporte en consola.
 ```
+
+### Checklist de Revisión del Diff
+- [ ] ¿Todos los `double` fueron reemplazados?
+- [ ] ¿Los constructores usan String, no literales?
+- [ ] ¿`tieneFondosSuficientes` usa `compareTo()`?
+- [ ] ¿Pasan todas las pruebas del runner ejecutable?
+
+### Lo Que Aprendiste
+- El patrón **diagnóstico → corrección y verificación** evita cambios inesperados y asegura la solución.
+- El diff de Agent Mode es tu red de seguridad.
+- Pedir pruebas autónomas con `main()` permite verificación inmediata sin lidiar con configuración de librerías.
 
 ---
 
-## Caso 3 · Agent Mode: Pruebas JUnit/Mockito
-**Modo:** 🔴 Agent | **Tiempo:** 10 min
+## Caso 3 · Agent Mode: Generación de Pruebas JUnit/Mockito
 
-**Listar primero:**
+**Modo:** 🔴 Agent | **Tiempo:** 10 min | **Nivel:** Básico
+
+### Contexto
+
+El módulo de validación de cuentas tiene 0% de cobertura de pruebas. Auditoría interna próxima.
+
+### Prompt de Análisis de Casos (primero)
 ```
-Lista todos los casos de prueba para puedeDebitar() incluyendo:
-cuenta bloqueada, saldo insuficiente, límite diario exacto,
-sobregiro exactamente igual al límite. No escribas código todavía.
+Antes de generar pruebas, lista todos los casos de prueba para puedeDebitar()
+de CuentaValidatorService.java, incluyendo casos borde bancarios:
+cuenta bloqueada, saldo insuficiente, límite diario exacto, monto nulo,
+sobregiro exactamente igual al límite.
+No escribas código todavía.
 ```
 
-**Generar:**
+### Prompt de Generación
 ```
 Genera CuentaValidatorServiceTest.java con JUnit 5 y Mockito.
-Usa @DisplayName en español. Usa @ParameterizedTest donde aplique.
+Incluye todos los casos listados. Usa @DisplayName en español legible por negocio.
+Usa @ParameterizedTest para validaciones de número de cuenta.
+Paquete: com.bancomercantil.core.cuentas
 ```
 
 ---
